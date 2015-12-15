@@ -9,6 +9,8 @@ bin/*
 
 testgl/SDLandOpenGL/*.mk
 testgl/SDLandOpenGL/client.txt
+testgl/SDLandOpenGL/Debug/*
+testgl/SDLandOpenGL/SDLandOpenGL.txt
 testgl/Makefile
 
 dependencies/*
