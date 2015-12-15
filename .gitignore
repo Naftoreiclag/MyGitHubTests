@@ -1,5 +1,6 @@
 testgl/.codelite/*
 testgl/.clang/*
+testgl/workspace.tags
 
 binDebug/*
 bin/*
