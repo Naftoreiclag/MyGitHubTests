@@ -1,0 +1,14 @@
+testgl/.codelite/*
+testgl/.clang/*
+
+binDebug/*
+bin/*
+
+*.exe
+
+testgl/SDLandOpenGL/*.mk
+testgl/SDLandOpenGL/client.txt
+testgl/Makefile
+
+dependencies/*
+resources/media*
