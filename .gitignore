@@ -15,3 +15,6 @@ testgl/Makefile
 
 dependencies/*
 resources/media*
+
+resources/*
+jsoncpp/*

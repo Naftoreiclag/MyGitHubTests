@@ -4,6 +4,14 @@
   <Dependencies/>
   <VirtualDirectory Name="src">
     <File Name="main.cpp"/>
+    <File Name="MiscResource.hpp"/>
+    <File Name="MiscResource.cpp"/>
+    <File Name="Resource.hpp"/>
+    <File Name="Resource.cpp"/>
+    <File Name="TextResource.cpp"/>
+    <File Name="ResourceManager.hpp"/>
+    <File Name="TextResource.hpp"/>
+    <File Name="ResourceManager.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
@@ -18,10 +26,13 @@
     <Configuration Name="Debug" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g;-O0;-Wall" C_Options="-g;-O0;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
+        <IncludePath Value="../../jsoncpp/dist"/>
       </Compiler>
       <Linker Options="" Required="yes">
         <Library Value="GL"/>
         <Library Value="GLEW"/>
+        <Library Value="boost_system"/>
+        <Library Value="boost_filesystem"/>
         <Library Value="SDL2main"/>
         <Library Value="SDL2"/>
       </Linker>
@@ -98,4 +109,7 @@
       </Completion>
     </Configuration>
   </Settings>
+  <VirtualDirectory Name="jsoncpp">
+    <File Name="../../jsoncpp/dist/jsoncpp.cpp"/>
+  </VirtualDirectory>
 </CodeLite_Project>
