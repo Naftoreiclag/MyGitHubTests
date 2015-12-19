@@ -35,7 +35,6 @@ int main(int argc, char* argv[]) {
     SDL_GLContext glContext = SDL_GL_CreateContext(sdlWindow);
     SDL_GL_SetSwapInterval(1);
     
-    
     // Use experimental drivers #yolo
     glewExperimental = GL_TRUE;
     glewInit();
@@ -82,11 +81,11 @@ int main(int argc, char* argv[]) {
     const GLchar* fragSrc = fragText->getString().c_str();
     
     GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertShader, 1, &vertSrc, NULL);
+    glShaderSource(vertShader, 1, &vertSrc, 0);
     glCompileShader(vertShader);
 
     GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragShader, 1, &fragSrc, NULL);
+    glShaderSource(fragShader, 1, &fragSrc, 0);
     glCompileShader(fragShader);
 
     GLuint shaderProg = glCreateProgram();
@@ -94,7 +93,8 @@ int main(int argc, char* argv[]) {
     glAttachShader(shaderProg, fragShader);
     glBindFragDataLocation(shaderProg, 0, "fragColor");
     glLinkProgram(shaderProg);
-    glUseProgram(shaderProg);
+    glDetachShader(shaderProg, vertShader);
+    glDetachShader(shaderProg, fragShader);
 
     GLint locationAttribute = glGetAttribLocation(shaderProg, "position");
     glEnableVertexAttribArray(locationAttribute);
@@ -103,6 +103,8 @@ int main(int argc, char* argv[]) {
     GLint colorAttribute = glGetAttribLocation(shaderProg, "color");
     glEnableVertexAttribArray(colorAttribute);
     glVertexAttribPointer(colorAttribute, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+
+    glUseProgram(shaderProg);
     
     bool running = true;
     while(running) {
