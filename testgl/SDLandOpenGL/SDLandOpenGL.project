@@ -8,12 +8,12 @@
     <File Name="MiscResource.cpp"/>
     <File Name="Resource.hpp"/>
     <File Name="Resource.cpp"/>
-    <File Name="TextResource.cpp"/>
     <File Name="ResourceManager.hpp"/>
-    <File Name="TextResource.hpp"/>
     <File Name="ResourceManager.cpp"/>
     <File Name="ImageResource.hpp"/>
     <File Name="ImageResource.cpp"/>
+    <File Name="StringResource.cpp"/>
+    <File Name="StringResource.hpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>

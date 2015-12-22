@@ -7,27 +7,27 @@
 
 #include "Resource.hpp"
 #include "ImageResource.hpp"
-#include "TextResource.hpp"
+#include "StringResource.hpp"
 #include "MiscResource.hpp"
 
 class ResourceManager {
 private:
-    std::map<std::string, TextResource*> mTexts;
+    std::map<std::string, StringResource*> mTexts;
     std::map<std::string, ImageResource*> mImages;
     std::map<std::string, MiscResource*> mMiscs;
-    
+
     uint32_t mPermaloadThreshold;
-    
+
 public:
     ResourceManager();
     ~ResourceManager();
-    
+
     void setPermaloadThreshold(uint32_t size);
     const uint32_t& getPermaloadThreshold();
 
     void mapAll(boost::filesystem::path data);
-    
-    TextResource* findText(std::string name);
+
+    StringResource* findText(std::string name);
     ImageResource* findImage(std::string name);
 };
 

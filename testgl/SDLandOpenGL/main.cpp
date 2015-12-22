@@ -71,8 +71,8 @@ int main(int argc, char* argv[]) {
     ResourceManager resman;
     resman.mapAll(resourceDef);
     
-    TextResource* vertText = resman.findText("Hello.vertexShader");
-    TextResource* fragText = resman.findText("Hello.fragmentShader");
+    StringResource* vertText = resman.findText("Hello.vertexShader");
+    StringResource* fragText = resman.findText("Hello.fragmentShader");
     
     vertText->grab();
     fragText->grab();
@@ -114,7 +114,7 @@ int main(int argc, char* argv[]) {
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureObj);
-    ImageResource* imageData = resman.findImage("128Rose.image");
+    ImageResource* imageData = resman.findImage("ExpensiveResource2.image");
     imageData->grab();
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageData->getWidth(), imageData->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, imageData->getImage());
     imageData->drop();

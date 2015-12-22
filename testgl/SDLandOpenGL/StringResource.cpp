@@ -1,37 +1,37 @@
-#include "TextResource.hpp"
+#include "StringResource.hpp"
 
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-TextResource::TextResource()
+StringResource::StringResource()
 : mLoaded(false) {
 }
 
-TextResource::~TextResource() {
+StringResource::~StringResource() {
 }
 
-bool TextResource::load() {
+bool StringResource::load() {
     if(mLoaded) {
         return true;
     }
-    
+
     std::ifstream loader(this->getFile().c_str());
     std::stringstream ss;
     ss << loader.rdbuf();
     loader.close();
-    
-    mData = ss.str();
+
+    mString = ss.str();
     mLoaded = true;
     return true;
 }
 
-bool TextResource::unload() {
+bool StringResource::unload() {
     // Text files are not worth unloading, probably...
-    
+
     return true;
 }
 
-const std::string& TextResource::getString() {
-    return mData;
+const std::string& StringResource::getString() {
+    return mString;
 }

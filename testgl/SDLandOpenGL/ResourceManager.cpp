@@ -41,7 +41,7 @@ void ResourceManager::mapAll(boost::filesystem::path dataPackFile) {
         
         Resource* newRes;
         if(resType == "text" || resType == "fragment-shader" || resType == "vertex-shader") {
-            newRes = mTexts[name] = new TextResource();
+            newRes = mTexts[name] = new StringResource();
         } else if(resType == "image") {
             newRes = mImages[name] = new ImageResource();
         } else {
@@ -58,7 +58,7 @@ void ResourceManager::mapAll(boost::filesystem::path dataPackFile) {
     }
 }
 
-TextResource* ResourceManager::findText(std::string name) {
+StringResource* ResourceManager::findText(std::string name) {
     return mTexts[name];
 }
 ImageResource* ResourceManager::findImage(std::string name) {
