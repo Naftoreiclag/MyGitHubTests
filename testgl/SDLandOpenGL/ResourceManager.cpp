@@ -5,6 +5,12 @@
 
 #include "json/json.h"
 
+ResourceManager* ResourceManager::getSingleton() {
+    static ResourceManager instance;
+
+    return &instance;
+}
+
 ResourceManager::ResourceManager()
 : mPermaloadThreshold(0) {
 }
@@ -41,9 +47,11 @@ void ResourceManager::mapAll(boost::filesystem::path dataPackFile) {
         
         Resource* newRes;
         if(resType == "text" || resType == "fragment-shader" || resType == "vertex-shader") {
-            newRes = mTexts[name] = new StringResource();
+            newRes = mStrings[name] = new StringResource();
         } else if(resType == "image") {
             newRes = mImages[name] = new ImageResource();
+        } else if(resType == "texture") {
+            newRes = mTextures[name] = new TextureResource();
         } else {
             newRes = mMiscs[name] = new MiscResource();
         }
@@ -58,9 +66,12 @@ void ResourceManager::mapAll(boost::filesystem::path dataPackFile) {
     }
 }
 
-StringResource* ResourceManager::findText(std::string name) {
-    return mTexts[name];
+StringResource* ResourceManager::findString(std::string name) {
+    return mStrings[name];
 }
 ImageResource* ResourceManager::findImage(std::string name) {
     return mImages[name];
+}
+TextureResource* ResourceManager::findTexture(std::string name) {
+    return mTextures[name];
 }

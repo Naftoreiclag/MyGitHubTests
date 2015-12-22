@@ -14,6 +14,8 @@
     <File Name="ImageResource.cpp"/>
     <File Name="StringResource.cpp"/>
     <File Name="StringResource.hpp"/>
+    <File Name="TextureResource.cpp"/>
+    <File Name="TextureResource.hpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>

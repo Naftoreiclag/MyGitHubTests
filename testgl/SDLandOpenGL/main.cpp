@@ -68,11 +68,11 @@ int main(int argc, char* argv[]) {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     
     boost::filesystem::path resourceDef = "../../../resources/data.package";
-    ResourceManager resman;
-    resman.mapAll(resourceDef);
+    ResourceManager* resman = ResourceManager::getSingleton();
+    resman->mapAll(resourceDef);
     
-    StringResource* vertText = resman.findText("Hello.vertexShader");
-    StringResource* fragText = resman.findText("Hello.fragmentShader");
+    StringResource* vertText = resman->findString("Hello.vertexShader");
+    StringResource* fragText = resman->findString("Hello.fragmentShader");
     
     vertText->grab();
     fragText->grab();
@@ -109,12 +109,12 @@ int main(int argc, char* argv[]) {
     glVertexAttribPointer(texCoordAttribute, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*)(5 * sizeof(GLfloat)));
 
 
+
     GLuint textureObj;
     glGenTextures(1, &textureObj);
 
-    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureObj);
-    ImageResource* imageData = resman.findImage("ExpensiveResource2.image");
+    ImageResource* imageData = resman->findImage("ExpensiveResource2.image");
     imageData->grab();
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageData->getWidth(), imageData->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, imageData->getImage());
     imageData->drop();
@@ -124,7 +124,11 @@ int main(int argc, char* argv[]) {
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureObj);
     glUniform1i(glGetUniformLocation(shaderProg, "ambientTex"), 0);
 
     glUseProgram(shaderProg);
