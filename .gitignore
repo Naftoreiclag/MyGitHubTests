@@ -13,8 +13,5 @@ testgl/SDLandOpenGL/Debug/*
 testgl/SDLandOpenGL/SDLandOpenGL.txt
 testgl/Makefile
 
-dependencies/*
-resources/media*
-
 resources/*
-jsoncpp/*
+libraries/*
