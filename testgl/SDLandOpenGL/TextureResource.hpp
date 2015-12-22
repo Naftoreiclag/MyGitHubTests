@@ -18,6 +18,8 @@ public:
     
     GLuint getHandle() const;
 
+    static GLenum toEnum(const std::string& val, GLenum errorVal);
+
 };
 
 #endif // TEXTURERESOURCE_HPP
