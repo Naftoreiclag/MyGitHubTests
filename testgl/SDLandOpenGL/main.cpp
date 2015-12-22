@@ -108,27 +108,11 @@ int main(int argc, char* argv[]) {
     glEnableVertexAttribArray(texCoordAttribute);
     glVertexAttribPointer(texCoordAttribute, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*)(5 * sizeof(GLfloat)));
 
-
-
-    GLuint textureObj;
-    glGenTextures(1, &textureObj);
-
-    glBindTexture(GL_TEXTURE_2D, textureObj);
-    ImageResource* imageData = resman->findImage("ExpensiveResource2.image");
-    imageData->grab();
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageData->getWidth(), imageData->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, imageData->getImage());
-    imageData->drop();
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glBindTexture(GL_TEXTURE_2D, 0);
-
+    TextureResource* textureData = resman->findTexture("GreenJellyfish.texture");
+    textureData->grab();
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textureObj);
+    glBindTexture(GL_TEXTURE_2D, textureData->getHandle());
     glUniform1i(glGetUniformLocation(shaderProg, "ambientTex"), 0);
 
     glUseProgram(shaderProg);
@@ -148,6 +132,8 @@ int main(int argc, char* argv[]) {
         
         SDL_GL_SwapWindow(sdlWindow);
     }
+
+    textureData->drop();
     
     glDeleteProgram(shaderProg);
     glDeleteShader(fragShader);
