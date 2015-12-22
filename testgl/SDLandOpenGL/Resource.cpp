@@ -7,7 +7,7 @@ Resource::Resource()
 Resource::~Resource() { }
 
 void Resource::setFile(const boost::filesystem::path& file) {
-    assert(mFile == boost::filesystem::path());
+    assert(mFile == boost::filesystem::path() && "File loading path is set twice.");
     mFile = file;
 }
 const boost::filesystem::path& Resource::getFile() {
