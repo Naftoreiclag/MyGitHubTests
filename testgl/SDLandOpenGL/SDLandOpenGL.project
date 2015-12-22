@@ -12,6 +12,8 @@
     <File Name="ResourceManager.hpp"/>
     <File Name="TextResource.hpp"/>
     <File Name="ResourceManager.cpp"/>
+    <File Name="ImageResource.hpp"/>
+    <File Name="ImageResource.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
@@ -26,7 +28,8 @@
     <Configuration Name="Debug" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g;-O0;-Wall" C_Options="-g;-O0;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
-        <IncludePath Value="../../jsoncpp/dist"/>
+        <IncludePath Value="../../libraries/jsoncpp/dist"/>
+        <IncludePath Value="../../libraries/stb"/>
       </Compiler>
       <Linker Options="" Required="yes">
         <Library Value="GL"/>
@@ -109,7 +112,9 @@
       </Completion>
     </Configuration>
   </Settings>
-  <VirtualDirectory Name="jsoncpp">
-    <File Name="../../jsoncpp/dist/jsoncpp.cpp"/>
+  <VirtualDirectory Name="libraries">
+    <VirtualDirectory Name="jsoncpp">
+      <File Name="../../libraries/jsoncpp/dist/jsoncpp.cpp"/>
+    </VirtualDirectory>
   </VirtualDirectory>
 </CodeLite_Project>
