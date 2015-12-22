@@ -47,10 +47,10 @@ int main(int argc, char* argv[]) {
     glGenBuffers(1, &vertexBufferObject);
     
     GLfloat vertices[] = {
-         0.6f,  0.6f, 0.0f, 0.0f, 1.0f,
-         0.6f, -0.6f, 0.0f, 1.0f, 0.0f,
-        -0.6f,  0.6f, 0.0f, 1.0f, 1.0f,
-        -0.6f, -0.6f, 1.0f, 0.0f, 0.0f
+         0.6f,  0.6f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+         0.6f, -0.6f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        -0.6f,  0.6f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+        -0.6f, -0.6f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f
     };
     
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
@@ -98,11 +98,34 @@ int main(int argc, char* argv[]) {
 
     GLint locationAttribute = glGetAttribLocation(shaderProg, "position");
     glEnableVertexAttribArray(locationAttribute);
-    glVertexAttribPointer(locationAttribute, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
+    glVertexAttribPointer(locationAttribute, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), 0);
 
     GLint colorAttribute = glGetAttribLocation(shaderProg, "color");
     glEnableVertexAttribArray(colorAttribute);
-    glVertexAttribPointer(colorAttribute, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+    glVertexAttribPointer(colorAttribute, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+
+    GLint texCoordAttribute = glGetAttribLocation(shaderProg, "texCoord");
+    glEnableVertexAttribArray(texCoordAttribute);
+    glVertexAttribPointer(texCoordAttribute, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*)(5 * sizeof(GLfloat)));
+
+
+    GLuint textureObj;
+    glGenTextures(1, &textureObj);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureObj);
+    ImageResource* imageData = resman.findImage("128Rose.image");
+    imageData->grab();
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageData->getWidth(), imageData->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, imageData->getImage());
+    imageData->drop();
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glUniform1i(glGetUniformLocation(shaderProg, "ambientTex"), 0);
 
     glUseProgram(shaderProg);
     
