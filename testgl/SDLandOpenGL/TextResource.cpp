@@ -22,7 +22,7 @@ bool TextResource::load() {
     loader.close();
     
     mData = ss.str();
-    
+    mLoaded = true;
     return true;
 }
 
