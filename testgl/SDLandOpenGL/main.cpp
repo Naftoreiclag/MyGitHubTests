@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     glewExperimental = GL_TRUE;
     glewInit();
 
-    glClearColor(1.f, 1.f, 0.f, 1.f);
+    glClearColor(0.098f, 0.486f, 0.502f, 1.f);
     glEnable(GL_DEPTH_TEST);
     
     GLuint vertexArrayObject;
@@ -51,7 +51,6 @@ int main(int argc, char* argv[]) {
     
     GLuint vertexBufferObject;
     glGenBuffers(1, &vertexBufferObject);
-    
 
     GLfloat vertices[] = {
          0.6f,  0.6f,  0.6f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
@@ -130,6 +129,8 @@ int main(int argc, char* argv[]) {
 
     glUseProgram(shaderProg);
 
+    glBindVertexArray(0);
+
     GLint uModel = glGetUniformLocation(shaderProg, "uModel");
     GLint uView = glGetUniformLocation(shaderProg, "uView");
     GLint uProj = glGetUniformLocation(shaderProg, "uProj");
@@ -160,7 +161,10 @@ int main(int argc, char* argv[]) {
         glUniformMatrix4fv(uModel, 1, GL_FALSE, glm::value_ptr(modelMat));
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glBindVertexArray(vertexArrayObject);
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
 
         SDL_GL_SwapWindow(sdlWindow);
     }
