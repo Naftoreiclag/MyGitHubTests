@@ -4,6 +4,9 @@
 #define GL3_PROTOTYPES 1
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <SDL2/SDL.h>
 
 #include "ResourceManager.hpp"
@@ -116,7 +119,15 @@ int main(int argc, char* argv[]) {
     glUniform1i(glGetUniformLocation(shaderProg, "ambientTex"), 0);
 
     glUseProgram(shaderProg);
-    
+
+    GLint uModel = glGetUniformLocation(shaderProg, "uModel");
+    GLint uView = glGetUniformLocation(shaderProg, "uView");
+    GLint uProj = glGetUniformLocation(shaderProg, "uProj");
+
+    glm::mat4 viewMat = glm::lookAt(glm::vec3(2.f, 2.f, 2.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f));
+    glm::mat4 projMat = glm::perspective(glm::radians(90.f), 1280.f / 720.f, 1.f, 10.f);
+    glm::mat4 modelMat;
+
     bool running = true;
     while(running) {
         SDL_Event event;
@@ -125,11 +136,15 @@ int main(int argc, char* argv[]) {
                 running = false;
             }
         }
-        
+
+        glUniformMatrix4fv(uView, 1, GL_FALSE, glm::value_ptr(viewMat));
+        glUniformMatrix4fv(uProj, 1, GL_FALSE, glm::value_ptr(projMat));
+        glUniformMatrix4fv(uModel, 1, GL_FALSE, glm::value_ptr(modelMat));
+
         glClearColor(1.f, 1.f, 0.f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        
+
         SDL_GL_SwapWindow(sdlWindow);
     }
 
