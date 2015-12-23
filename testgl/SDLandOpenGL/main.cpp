@@ -41,6 +41,9 @@ int main(int argc, char* argv[]) {
     // Use experimental drivers #yolo
     glewExperimental = GL_TRUE;
     glewInit();
+
+    glClearColor(1.f, 1.f, 0.f, 1.f);
+    glEnable(GL_DEPTH_TEST);
     
     GLuint vertexArrayObject;
     glGenVertexArrays(1, &vertexArrayObject);
@@ -49,11 +52,16 @@ int main(int argc, char* argv[]) {
     GLuint vertexBufferObject;
     glGenBuffers(1, &vertexBufferObject);
     
+
     GLfloat vertices[] = {
-         0.6f,  0.6f,  2.6f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-         0.6f, -0.6f,  2.6f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-        -0.6f,  0.6f,  2.6f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-        -0.6f, -0.6f,  2.6f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f
+         0.6f,  0.6f,  0.6f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+         0.6f, -0.6f,  0.6f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        -0.6f,  0.6f,  0.6f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+        -0.6f, -0.6f,  0.6f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+         0.6f,  0.6f, -0.6f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+         0.6f, -0.6f, -0.6f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        -0.6f,  0.6f, -0.6f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+        -0.6f, -0.6f, -0.6f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f
     };
     
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
@@ -63,8 +71,10 @@ int main(int argc, char* argv[]) {
     glGenBuffers(1, &indexBufferObject);
     
     GLuint indices[] = {
+        0, 2, 4,
+        6, 4, 2,
         0, 2, 1,
-        3, 1, 2
+        3, 1, 2,
     };
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObject);
@@ -128,6 +138,8 @@ int main(int argc, char* argv[]) {
     glm::mat4 projMat = glm::perspective(glm::radians(90.f), 1280.f / 720.f, 1.f, 10.f);
     glm::mat4 modelMat;
 
+    uint32_t prev = SDL_GetTicks();
+
     bool running = true;
     while(running) {
         SDL_Event event;
@@ -137,13 +149,18 @@ int main(int argc, char* argv[]) {
             }
         }
 
+        uint32_t now = SDL_GetTicks();
+        double tps = now - prev;
+        prev = now;
+
+        modelMat = glm::rotate(modelMat, glm::radians((float) (tps * 0.5)), glm::vec3(0.0f, 1.0f, 0.0f));
+
         glUniformMatrix4fv(uView, 1, GL_FALSE, glm::value_ptr(viewMat));
         glUniformMatrix4fv(uProj, 1, GL_FALSE, glm::value_ptr(projMat));
         glUniformMatrix4fv(uModel, 1, GL_FALSE, glm::value_ptr(modelMat));
 
-        glClearColor(1.f, 1.f, 0.f, 1.f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
 
         SDL_GL_SwapWindow(sdlWindow);
     }
