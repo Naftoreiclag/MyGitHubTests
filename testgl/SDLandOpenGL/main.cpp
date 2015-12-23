@@ -50,10 +50,10 @@ int main(int argc, char* argv[]) {
     glGenBuffers(1, &vertexBufferObject);
     
     GLfloat vertices[] = {
-         0.6f,  0.6f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-         0.6f, -0.6f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-        -0.6f,  0.6f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-        -0.6f, -0.6f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f
+         0.6f,  0.6f,  2.6f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+         0.6f, -0.6f,  2.6f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        -0.6f,  0.6f,  2.6f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+        -0.6f, -0.6f,  2.6f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f
     };
     
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
@@ -101,15 +101,15 @@ int main(int argc, char* argv[]) {
 
     GLint locationAttribute = glGetAttribLocation(shaderProg, "position");
     glEnableVertexAttribArray(locationAttribute);
-    glVertexAttribPointer(locationAttribute, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), 0);
+    glVertexAttribPointer(locationAttribute, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), 0);
 
     GLint colorAttribute = glGetAttribLocation(shaderProg, "color");
     glEnableVertexAttribArray(colorAttribute);
-    glVertexAttribPointer(colorAttribute, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+    glVertexAttribPointer(colorAttribute, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 
     GLint texCoordAttribute = glGetAttribLocation(shaderProg, "texCoord");
     glEnableVertexAttribArray(texCoordAttribute);
-    glVertexAttribPointer(texCoordAttribute, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*)(5 * sizeof(GLfloat)));
+    glVertexAttribPointer(texCoordAttribute, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
 
     TextureResource* textureData = resman->findTexture("GreenJellyfish.texture");
     textureData->grab();
@@ -124,7 +124,7 @@ int main(int argc, char* argv[]) {
     GLint uView = glGetUniformLocation(shaderProg, "uView");
     GLint uProj = glGetUniformLocation(shaderProg, "uProj");
 
-    glm::mat4 viewMat = glm::lookAt(glm::vec3(2.f, 2.f, 2.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.f));
+    glm::mat4 viewMat = glm::lookAt(glm::vec3(0.f, 2.f, -2.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
     glm::mat4 projMat = glm::perspective(glm::radians(90.f), 1280.f / 720.f, 1.f, 10.f);
     glm::mat4 modelMat;
 
