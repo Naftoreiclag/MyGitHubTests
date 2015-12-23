@@ -44,6 +44,35 @@ int main(int argc, char* argv[]) {
 
     glClearColor(0.098f, 0.486f, 0.502f, 1.f);
     glEnable(GL_DEPTH_TEST);
+
+    boost::filesystem::path resourceDef = "../../../resources/data.package";
+    ResourceManager* resman = ResourceManager::getSingleton();
+    resman->mapAll(resourceDef);
+
+    StringResource* vertText = resman->findString("Hello.vertexShader");
+    StringResource* fragText = resman->findString("Hello.fragmentShader");
+
+    vertText->grab();
+    fragText->grab();
+
+    const GLchar* vertSrc = vertText->getString().c_str();
+    const GLchar* fragSrc = fragText->getString().c_str();
+
+    GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertShader, 1, &vertSrc, 0);
+    glCompileShader(vertShader);
+
+    GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragShader, 1, &fragSrc, 0);
+    glCompileShader(fragShader);
+
+    GLuint shaderProg = glCreateProgram();
+    glAttachShader(shaderProg, vertShader);
+    glAttachShader(shaderProg, fragShader);
+    glBindFragDataLocation(shaderProg, 0, "fragColor");
+    glLinkProgram(shaderProg);
+    glDetachShader(shaderProg, vertShader);
+    glDetachShader(shaderProg, fragShader);
     
     GLuint vertexArrayObject;
     glGenVertexArrays(1, &vertexArrayObject);
@@ -78,35 +107,6 @@ int main(int argc, char* argv[]) {
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObject);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    
-    boost::filesystem::path resourceDef = "../../../resources/data.package";
-    ResourceManager* resman = ResourceManager::getSingleton();
-    resman->mapAll(resourceDef);
-    
-    StringResource* vertText = resman->findString("Hello.vertexShader");
-    StringResource* fragText = resman->findString("Hello.fragmentShader");
-    
-    vertText->grab();
-    fragText->grab();
-    
-    const GLchar* vertSrc = vertText->getString().c_str();
-    const GLchar* fragSrc = fragText->getString().c_str();
-    
-    GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertShader, 1, &vertSrc, 0);
-    glCompileShader(vertShader);
-
-    GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragShader, 1, &fragSrc, 0);
-    glCompileShader(fragShader);
-
-    GLuint shaderProg = glCreateProgram();
-    glAttachShader(shaderProg, vertShader);
-    glAttachShader(shaderProg, fragShader);
-    glBindFragDataLocation(shaderProg, 0, "fragColor");
-    glLinkProgram(shaderProg);
-    glDetachShader(shaderProg, vertShader);
-    glDetachShader(shaderProg, fragShader);
 
     GLint locationAttribute = glGetAttribLocation(shaderProg, "position");
     glEnableVertexAttribArray(locationAttribute);
@@ -120,20 +120,15 @@ int main(int argc, char* argv[]) {
     glEnableVertexAttribArray(texCoordAttribute);
     glVertexAttribPointer(texCoordAttribute, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
 
+    glBindVertexArray(0);
+
     TextureResource* textureData = resman->findTexture("GreenJellyfish.texture");
     textureData->grab();
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textureData->getHandle());
-    glUniform1i(glGetUniformLocation(shaderProg, "ambientTex"), 0);
-
-    glUseProgram(shaderProg);
-
-    glBindVertexArray(0);
 
     GLint uModel = glGetUniformLocation(shaderProg, "uModel");
     GLint uView = glGetUniformLocation(shaderProg, "uView");
     GLint uProj = glGetUniformLocation(shaderProg, "uProj");
+    GLint uTex = glGetUniformLocation(shaderProg, "ambientTex");
 
     glm::mat4 viewMat = glm::lookAt(glm::vec3(0.f, 2.f, -2.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
     glm::mat4 projMat = glm::perspective(glm::radians(90.f), 1280.f / 720.f, 1.f, 10.f);
@@ -156,14 +151,22 @@ int main(int argc, char* argv[]) {
 
         modelMat = glm::rotate(modelMat, glm::radians((float) (tps * 0.5)), glm::vec3(0.0f, 1.0f, 0.0f));
 
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glBindVertexArray(vertexArrayObject);
+
+        glUseProgram(shaderProg);
+
         glUniformMatrix4fv(uView, 1, GL_FALSE, glm::value_ptr(viewMat));
         glUniformMatrix4fv(uProj, 1, GL_FALSE, glm::value_ptr(projMat));
         glUniformMatrix4fv(uModel, 1, GL_FALSE, glm::value_ptr(modelMat));
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureData->getHandle());
+        glUniform1i(uTex, 0);
 
-        glBindVertexArray(vertexArrayObject);
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+
         glBindVertexArray(0);
 
         SDL_GL_SwapWindow(sdlWindow);
