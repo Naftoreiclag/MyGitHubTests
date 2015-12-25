@@ -13,68 +13,33 @@ GeometryResource::~GeometryResource() {
 }
 
 uint32_t readU32(std::ifstream& input) {
-    uint8_t data[4];
-
-    input >> data[0];
-    input >> data[1];
-    input >> data[2];
-    input >> data[3];
-
     uint32_t value;
-    value += data[0] << 24;
-    value += data[1] << 16;
-    value += data[2] << 8;
-    value += data[3];
-
+    input.read((char*) &value, sizeof value);
     return value;
 }
 
 bool readBool(std::ifstream& input) {
-    uint8_t data;
-
-    input >> data;
-
-    return data > 0;
+    char value;
+    input.read(&value, sizeof value);
+    return value != 0;
 }
 
 uint16_t readU16(std::ifstream& input) {
-    uint16_t data[2];
-
-    input >> data[0];
-    input >> data[1];
-
     uint16_t value;
-    value += data[0] << 8;
-    value += data[1];
-
+    input.read((char*) &value, sizeof value);
     return value;
 }
 
 uint8_t readU8(std::ifstream& input) {
-    uint8_t data;
-
-    input >> data;
-
-    return data;
+    char value;
+    input.read(&value, sizeof value);
+    return value;
 }
 
 float readF32(std::ifstream& input) {
-    uint8_t data[4];
-
-    input >> data[0];
-    input >> data[1];
-    input >> data[2];
-    input >> data[3];
-
-    uint32_t value;
-    value += data[0] << 24;
-    value += data[1] << 16;
-    value += data[2] << 8;
-    value += data[3];
-
-    float& friar = *((float*) &value);
-
-    return friar;
+    float value;
+    input.read((char*) &value, sizeof value);
+    return value;
 }
 
 bool GeometryResource::load() {
@@ -105,6 +70,9 @@ bool GeometryResource::load() {
             vertices[(i * sizeVertices) + positionOff + 0] = readF32(input);
             vertices[(i * sizeVertices) + positionOff + 1] = readF32(input);
             vertices[(i * sizeVertices) + positionOff + 2] = readF32(input);
+            std::cout << " x: " << vertices[(i * sizeVertices) + positionOff + 0];
+            std::cout << " y: " << vertices[(i * sizeVertices) + positionOff + 1];
+            std::cout << " z: " << vertices[(i * sizeVertices) + positionOff + 2] << std::endl;
         }
         if(mUseColor) {
             vertices[(i * sizeVertices) + colorOff + 0] = readF32(input);
@@ -124,9 +92,12 @@ bool GeometryResource::load() {
 
     GLint indices[mNumTriangles * 3];
     for(uint32_t i = 0; i < mNumTriangles; ++ i) {
-        indices[(i * 3) + 0] = readF32(input);
-        indices[(i * 3) + 1] = readF32(input);
-        indices[(i * 3) + 2] = readF32(input);
+        indices[(i * 3) + 0] = readU32(input);
+        indices[(i * 3) + 1] = readU32(input);
+        indices[(i * 3) + 2] = readU32(input);
+        std::cout << " a: " << indices[(i * 3) + 0];
+        std::cout << " b: " << indices[(i * 3) + 1];
+        std::cout << " c: " << indices[(i * 3) + 2] << std::endl;
     }
 
     input.close();
@@ -139,28 +110,30 @@ bool GeometryResource::load() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     if(mUsePositions) {
-        GLint locationAttribute = 0;//glGetAttribLocation(shaderProg, "position");
+        GLint locationAttribute = glGetAttribLocation(mShaderProg, "position");
         glEnableVertexAttribArray(locationAttribute);
         glVertexAttribPointer(locationAttribute, 3, GL_FLOAT, GL_FALSE, sizeVertices * sizeof(GLfloat), (void*) positionOff);
     }
 
     if(mUseColor) {
-        GLint colorAttribute = 0;//glGetAttribLocation(shaderProg, "color");
+        GLint colorAttribute = glGetAttribLocation(mShaderProg, "color");
         glEnableVertexAttribArray(colorAttribute);
         glVertexAttribPointer(colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeVertices * sizeof(GLfloat), (void*) colorOff);
     }
 
     if(mUseUV) {
-        GLint texCoordAttribute = 0;//glGetAttribLocation(shaderProg, "texCoord");
+        GLint texCoordAttribute = glGetAttribLocation(mShaderProg, "texCoord");
         glEnableVertexAttribArray(texCoordAttribute);
         glVertexAttribPointer(texCoordAttribute, 2, GL_FLOAT, GL_FALSE, sizeVertices * sizeof(GLfloat), (void*) textureOff);
     }
 
+    /*
     if(mUseNormals) {
-        GLint normalsAttribute = 0;//glGetAttribLocation(shaderProg, "texCoord");
+        GLint normalsAttribute = glGetAttribLocation(mShaderProg, "texCoord");
         glEnableVertexAttribArray(normalsAttribute);
         glVertexAttribPointer(normalsAttribute, 3, GL_FLOAT, GL_FALSE, sizeVertices * sizeof(GLfloat), (void*) normalOff);
     }
+    */
 
     glGenBuffers(1, &mIndexBufferObject);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBufferObject);
@@ -172,6 +145,10 @@ bool GeometryResource::load() {
 }
 
 bool GeometryResource::unload() {
+    glDeleteBuffers(1, &mIndexBufferObject);
+    glDeleteBuffers(1, &mVertexBufferObject);
+    glDeleteVertexArrays(1, &mVertexArrayObject);
+
     mLoaded = false;
     return true;
 }

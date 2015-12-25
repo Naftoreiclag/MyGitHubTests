@@ -59,6 +59,7 @@ private:
     bool mUseNormals;
     bool mUsePositions;
 
+
     uint32_t mNumVertices;
     uint32_t mNumTriangles;
 
@@ -70,7 +71,9 @@ private:
 public:
     GeometryResource();
     virtual ~GeometryResource();
-    
+
+    GLuint mShaderProg;
+
     bool load();
     bool unload();
 

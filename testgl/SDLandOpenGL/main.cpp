@@ -75,6 +75,11 @@ int main(int argc, char* argv[]) {
 
     // MESH DATA
 
+    GeometryResource* benvolio = resman->findGeometry("Cube.geometry");
+    benvolio->mShaderProg = shaderProg;
+    benvolio->grab();
+
+    /*
     GLuint vertexArrayObject;
     glGenVertexArrays(1, &vertexArrayObject);
     glBindVertexArray(vertexArrayObject);
@@ -122,7 +127,7 @@ int main(int argc, char* argv[]) {
     glVertexAttribPointer(texCoordAttribute, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
 
     glBindVertexArray(0);
-
+    */
     // TEXTURE DATA
 
     TextureResource* textureData = resman->findTexture("GreenJellyfish.texture");
@@ -158,7 +163,7 @@ int main(int argc, char* argv[]) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glBindVertexArray(vertexArrayObject);
+        glBindVertexArray(benvolio->getHandle());
 
         glUseProgram(shaderProg);
 
@@ -170,7 +175,7 @@ int main(int argc, char* argv[]) {
         glBindTexture(GL_TEXTURE_2D, textureData->getHandle());
         glUniform1i(uTex, 0);
 
-        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, 0);
 
         glBindVertexArray(0);
 
@@ -182,10 +187,14 @@ int main(int argc, char* argv[]) {
     glDeleteProgram(shaderProg);
     glDeleteShader(fragShader);
     glDeleteShader(vertShader);
-    
+
+    benvolio->drop();
+
+    /*
     glDeleteBuffers(1, &indexBufferObject);
     glDeleteBuffers(1, &vertexBufferObject);
     glDeleteVertexArrays(1, &vertexArrayObject);
+    */
     
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(sdlWindow);
