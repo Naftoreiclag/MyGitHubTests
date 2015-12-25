@@ -159,7 +159,7 @@ int main(int argc, char* argv[]) {
         double tps = now - prev;
         prev = now;
 
-        modelMat = glm::rotate(modelMat, glm::radians((float) (tps * 0.5)), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelMat = glm::rotate(modelMat, glm::radians((float) (tps * 0.25)), glm::vec3(0.0f, 1.0f, 0.0f));
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

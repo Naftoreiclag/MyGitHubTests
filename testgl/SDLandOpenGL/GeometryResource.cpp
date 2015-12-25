@@ -54,6 +54,11 @@ bool GeometryResource::load() {
     mUseUV = readBool(input);
     mUseNormals = readBool(input);
 
+    std::cout << "pos" << mUsePositions << std::endl;
+    std::cout << "col" << mUseColor << std::endl;
+    std::cout << "uv" << mUseUV << std::endl;
+    std::cout << "norm" << mUseNormals << std::endl;
+
     mNumVertices = readU32(input);
     mNumTriangles = readU32(input);
 
@@ -70,9 +75,11 @@ bool GeometryResource::load() {
             vertices[(i * sizeVertices) + positionOff + 0] = readF32(input);
             vertices[(i * sizeVertices) + positionOff + 1] = readF32(input);
             vertices[(i * sizeVertices) + positionOff + 2] = readF32(input);
+            /*
             std::cout << " x: " << vertices[(i * sizeVertices) + positionOff + 0];
             std::cout << " y: " << vertices[(i * sizeVertices) + positionOff + 1];
             std::cout << " z: " << vertices[(i * sizeVertices) + positionOff + 2] << std::endl;
+            */
         }
         if(mUseColor) {
             vertices[(i * sizeVertices) + colorOff + 0] = readF32(input);
@@ -82,6 +89,10 @@ bool GeometryResource::load() {
         if(mUseUV) {
             vertices[(i * sizeVertices) + textureOff + 0] = readF32(input);
             vertices[(i * sizeVertices) + textureOff + 1] = readF32(input);
+            /*
+            std::cout << " u: " << vertices[(i * sizeVertices) + textureOff + 0];
+            std::cout << " v: " << vertices[(i * sizeVertices) + textureOff + 1] << std::endl;
+            */
         }
         if(mUseNormals) {
             vertices[(i * sizeVertices) + normalOff + 0] = readF32(input);
@@ -95,9 +106,11 @@ bool GeometryResource::load() {
         indices[(i * 3) + 0] = readU32(input);
         indices[(i * 3) + 1] = readU32(input);
         indices[(i * 3) + 2] = readU32(input);
+        /*
         std::cout << " a: " << indices[(i * 3) + 0];
         std::cout << " b: " << indices[(i * 3) + 1];
         std::cout << " c: " << indices[(i * 3) + 2] << std::endl;
+        */
     }
 
     input.close();
@@ -112,19 +125,19 @@ bool GeometryResource::load() {
     if(mUsePositions) {
         GLint locationAttribute = glGetAttribLocation(mShaderProg, "position");
         glEnableVertexAttribArray(locationAttribute);
-        glVertexAttribPointer(locationAttribute, 3, GL_FLOAT, GL_FALSE, sizeVertices * sizeof(GLfloat), (void*) positionOff);
+        glVertexAttribPointer(locationAttribute, 3, GL_FLOAT, GL_FALSE, sizeVertices * sizeof(GLfloat), (void*) (positionOff * sizeof(GLfloat)));
     }
 
     if(mUseColor) {
         GLint colorAttribute = glGetAttribLocation(mShaderProg, "color");
         glEnableVertexAttribArray(colorAttribute);
-        glVertexAttribPointer(colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeVertices * sizeof(GLfloat), (void*) colorOff);
+        glVertexAttribPointer(colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeVertices * sizeof(GLfloat), (void*) (colorOff * sizeof(GLfloat)));
     }
 
     if(mUseUV) {
         GLint texCoordAttribute = glGetAttribLocation(mShaderProg, "texCoord");
         glEnableVertexAttribArray(texCoordAttribute);
-        glVertexAttribPointer(texCoordAttribute, 2, GL_FLOAT, GL_FALSE, sizeVertices * sizeof(GLfloat), (void*) textureOff);
+        glVertexAttribPointer(texCoordAttribute, 2, GL_FLOAT, GL_FALSE, sizeVertices * sizeof(GLfloat), (void*) (textureOff * sizeof(GLfloat)));
     }
 
     /*
@@ -133,6 +146,20 @@ bool GeometryResource::load() {
         glEnableVertexAttribArray(normalsAttribute);
         glVertexAttribPointer(normalsAttribute, 3, GL_FLOAT, GL_FALSE, sizeVertices * sizeof(GLfloat), (void*) normalOff);
     }
+    */
+
+    /*
+    for(int zxcv = 0; zxcv < mNumVertices; ++ zxcv) {
+        for(int asdf = 0; asdf < sizeVertices; ++ asdf) {
+            std::cout << " " << vertices[zxcv * sizeVertices + asdf];
+        }
+
+        std::cout << std::endl;
+
+    }
+    std::cout << sizeVertices << std::endl;
+    std::cout << positionOff << std::endl;
+    std::cout << textureOff << std::endl;
     */
 
     glGenBuffers(1, &mIndexBufferObject);
