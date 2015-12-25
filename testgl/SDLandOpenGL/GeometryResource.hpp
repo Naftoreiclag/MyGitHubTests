@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include <GL/glew.h>
+#include <OpenGLStuff.hpp>
 
 #include "Resource.hpp"
 

@@ -52,6 +52,8 @@ void ResourceManager::mapAll(boost::filesystem::path dataPackFile) {
             newRes = mImages[name] = new ImageResource();
         } else if(resType == "texture") {
             newRes = mTextures[name] = new TextureResource();
+        } else if(resType == "geometry") {
+            newRes = mGeometries[name] = new GeometryResource();
         } else {
             newRes = mMiscs[name] = new MiscResource();
         }
@@ -74,4 +76,7 @@ ImageResource* ResourceManager::findImage(std::string name) {
 }
 TextureResource* ResourceManager::findTexture(std::string name) {
     return mTextures[name];
+}
+GeometryResource* ResourceManager::findGeometry(std::string name) {
+    return mGeometries[name];
 }

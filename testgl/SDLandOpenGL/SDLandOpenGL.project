@@ -18,6 +18,7 @@
     <File Name="TextureResource.hpp"/>
     <File Name="GeometryResource.cpp"/>
     <File Name="GeometryResource.hpp"/>
+    <File Name="OpenGLStuff.hpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>

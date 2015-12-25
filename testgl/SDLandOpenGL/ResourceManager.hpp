@@ -10,6 +10,7 @@
 #include "Resource.hpp"
 #include "StringResource.hpp"
 #include "TextureResource.hpp"
+#include "GeometryResource.hpp"
 
 class ResourceManager {
 public:
@@ -18,6 +19,7 @@ private:
     std::map<std::string, StringResource*> mStrings;
     std::map<std::string, ImageResource*> mImages;
     std::map<std::string, TextureResource*> mTextures;
+    std::map<std::string, GeometryResource*> mGeometries;
     std::map<std::string, MiscResource*> mMiscs;
 
     uint32_t mPermaloadThreshold;
@@ -34,6 +36,7 @@ public:
     StringResource* findString(std::string name);
     ImageResource* findImage(std::string name);
     TextureResource* findTexture(std::string name);
+    GeometryResource* findGeometry(std::string name);
 };
 
 

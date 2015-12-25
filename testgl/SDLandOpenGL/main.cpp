@@ -3,10 +3,7 @@
 #define GL_GLEXT_PROTOTYPES 1
 #define GL3_PROTOTYPES 1
 
-#include <GL/glew.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <OpenGLStuff.hpp>
 #include <SDL2/SDL.h>
 
 #include "ResourceManager.hpp"

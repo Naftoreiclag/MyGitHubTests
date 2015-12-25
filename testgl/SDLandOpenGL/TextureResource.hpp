@@ -1,7 +1,7 @@
 #ifndef TEXTURERESOURCE_HPP
 #define TEXTURERESOURCE_HPP
 
-#include <GL/gl.h>
+#include <OpenGLStuff.hpp>
 
 #include "Resource.hpp"
 

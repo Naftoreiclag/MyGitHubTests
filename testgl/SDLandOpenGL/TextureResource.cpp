@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-#include <GL/gl.h>
+#include <OpenGLStuff.hpp>
 
 #include "json/json.h"
 

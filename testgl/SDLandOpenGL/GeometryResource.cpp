@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-#include <GL/gl.h>
+#include <OpenGLStuff.hpp>
 
 GeometryResource::GeometryResource()
 : mLoaded(false) {
