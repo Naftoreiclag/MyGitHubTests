@@ -46,8 +46,14 @@ void ResourceManager::mapAll(boost::filesystem::path dataPackFile) {
         uint32_t size = resourceData["size"].asInt();
         
         Resource* newRes;
-        if(resType == "text" || resType == "fragment-shader" || resType == "vertex-shader") {
+        if(resType == "text") {
             newRes = mStrings[name] = new StringResource();
+        } else if(resType == "vertex-shader") {
+            newRes = mShaders[name] = new VertexShaderResource();
+        } else if(resType == "fragment-shader") {
+            newRes = mShaders[name] = new FragmentShaderResource();
+        } else if(resType == "shader-program") {
+            newRes = mShaderPrograms[name] = new ShaderProgramResource();
         } else if(resType == "image") {
             newRes = mImages[name] = new ImageResource();
         } else if(resType == "texture") {
@@ -79,4 +85,10 @@ TextureResource* ResourceManager::findTexture(std::string name) {
 }
 GeometryResource* ResourceManager::findGeometry(std::string name) {
     return mGeometries[name];
+}
+ShaderResource* ResourceManager::findShader(std::string name) {
+    return mShaders[name];
+}
+ShaderProgramResource* ResourceManager::findShaderProgram(std::string name) {
+    return mShaderPrograms[name];
 }

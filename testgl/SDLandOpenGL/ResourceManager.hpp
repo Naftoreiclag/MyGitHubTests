@@ -11,6 +11,10 @@
 #include "StringResource.hpp"
 #include "TextureResource.hpp"
 #include "GeometryResource.hpp"
+#include "ShaderResource.hpp"
+#include "ShaderProgramResource.hpp"
+#include "VertexShaderResource.hpp"
+#include "FragmentShaderResource.hpp"
 
 class ResourceManager {
 public:
@@ -20,6 +24,8 @@ private:
     std::map<std::string, ImageResource*> mImages;
     std::map<std::string, TextureResource*> mTextures;
     std::map<std::string, GeometryResource*> mGeometries;
+    std::map<std::string, ShaderResource*> mShaders;
+    std::map<std::string, ShaderProgramResource*> mShaderPrograms;
     std::map<std::string, MiscResource*> mMiscs;
 
     uint32_t mPermaloadThreshold;
@@ -37,6 +43,8 @@ public:
     ImageResource* findImage(std::string name);
     TextureResource* findTexture(std::string name);
     GeometryResource* findGeometry(std::string name);
+    ShaderResource* findShader(std::string name);
+    ShaderProgramResource* findShaderProgram(std::string name);
 };
 
 

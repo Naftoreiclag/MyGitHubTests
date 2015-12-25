@@ -4,21 +4,31 @@
   <Dependencies/>
   <VirtualDirectory Name="src">
     <File Name="main.cpp"/>
-    <File Name="MiscResource.hpp"/>
-    <File Name="MiscResource.cpp"/>
-    <File Name="Resource.hpp"/>
-    <File Name="Resource.cpp"/>
-    <File Name="ResourceManager.hpp"/>
-    <File Name="ResourceManager.cpp"/>
-    <File Name="ImageResource.hpp"/>
-    <File Name="ImageResource.cpp"/>
-    <File Name="StringResource.cpp"/>
-    <File Name="StringResource.hpp"/>
-    <File Name="TextureResource.cpp"/>
-    <File Name="TextureResource.hpp"/>
-    <File Name="GeometryResource.cpp"/>
-    <File Name="GeometryResource.hpp"/>
     <File Name="OpenGLStuff.hpp"/>
+    <VirtualDirectory Name="Resources">
+      <File Name="GeometryResource.cpp"/>
+      <File Name="GeometryResource.hpp"/>
+      <File Name="ImageResource.cpp"/>
+      <File Name="ImageResource.hpp"/>
+      <File Name="MiscResource.cpp"/>
+      <File Name="MiscResource.hpp"/>
+      <File Name="Resource.cpp"/>
+      <File Name="Resource.hpp"/>
+      <File Name="ResourceManager.cpp"/>
+      <File Name="ResourceManager.hpp"/>
+      <File Name="StringResource.cpp"/>
+      <File Name="StringResource.hpp"/>
+      <File Name="TextureResource.cpp"/>
+      <File Name="TextureResource.hpp"/>
+      <File Name="ShaderProgramResource.hpp"/>
+      <File Name="ShaderProgramResource.cpp"/>
+      <File Name="VertexShaderResource.cpp"/>
+      <File Name="VertexShaderResource.hpp"/>
+      <File Name="FragmentShaderResource.hpp"/>
+      <File Name="FragmentShaderResource.cpp"/>
+      <File Name="ShaderResource.hpp"/>
+      <File Name="ShaderResource.cpp"/>
+    </VirtualDirectory>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>

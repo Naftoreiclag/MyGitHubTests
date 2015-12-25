@@ -48,6 +48,7 @@ int main(int argc, char* argv[]) {
 
     // SHADER DATA
 
+    /*
     StringResource* vertText = resman->findString("Hello.vertexShader");
     StringResource* fragText = resman->findString("Hello.fragmentShader");
 
@@ -73,64 +74,36 @@ int main(int argc, char* argv[]) {
     glDetachShader(shaderProg, vertShader);
     glDetachShader(shaderProg, fragShader);
 
+    */
+
+    VertexShaderResource* vertexShaderRes = (VertexShaderResource*) resman->findShader("Hello.vertexShader");
+    FragmentShaderResource* fragShaderRes = (FragmentShaderResource*) resman->findShader("Hello.fragmentShader");
+    fragShaderRes->grab();
+    vertexShaderRes->grab();
+
+    GLuint shaderProg = glCreateProgram();
+    glAttachShader(shaderProg, vertexShaderRes->getHandle());
+    glAttachShader(shaderProg, fragShaderRes->getHandle());
+    glBindFragDataLocation(shaderProg, 0, "fragColor");
+    glLinkProgram(shaderProg);
+    glDetachShader(shaderProg, vertexShaderRes->getHandle());
+    glDetachShader(shaderProg, fragShaderRes->getHandle());
+
+    /*
+    ShaderProgramResource* shaderProgRes = resman->findShaderProgram("Hello.shaderProgram");
+    shaderProgRes->grab();
+    GLuint shaderProg = shaderProgRes->getHandle();
+    */
+
     // MESH DATA
 
     GeometryResource* benvolio = resman->findGeometry("Cube.geometry");
     benvolio->mShaderProg = shaderProg;
     benvolio->grab();
 
-    /*
-    GLuint vertexArrayObject;
-    glGenVertexArrays(1, &vertexArrayObject);
-    glBindVertexArray(vertexArrayObject);
-    
-    GLuint vertexBufferObject;
-    glGenBuffers(1, &vertexBufferObject);
-
-    GLfloat vertices[] = {
-         0.6f,  0.6f,  0.6f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-         0.6f, -0.6f,  0.6f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-        -0.6f,  0.6f,  0.6f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-        -0.6f, -0.6f,  0.6f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-         0.6f,  0.6f, -0.6f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-         0.6f, -0.6f, -0.6f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-        -0.6f,  0.6f, -0.6f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-        -0.6f, -0.6f, -0.6f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f
-    };
-    
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    
-    GLuint indexBufferObject;
-    glGenBuffers(1, &indexBufferObject);
-    
-    GLuint indices[] = {
-        0, 2, 4,
-        6, 4, 2,
-        0, 2, 1,
-        3, 1, 2,
-    };
-    
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferObject);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    GLint locationAttribute = glGetAttribLocation(shaderProg, "position");
-    glEnableVertexAttribArray(locationAttribute);
-    glVertexAttribPointer(locationAttribute, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), 0);
-
-    GLint colorAttribute = glGetAttribLocation(shaderProg, "color");
-    glEnableVertexAttribArray(colorAttribute);
-    glVertexAttribPointer(colorAttribute, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-
-    GLint texCoordAttribute = glGetAttribLocation(shaderProg, "texCoord");
-    glEnableVertexAttribArray(texCoordAttribute);
-    glVertexAttribPointer(texCoordAttribute, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
-
-    glBindVertexArray(0);
-    */
     // TEXTURE DATA
 
-    TextureResource* textureData = resman->findTexture("GreenJellyfish.texture");
+    TextureResource* textureData = resman->findTexture("128Rose.texture");
     textureData->grab();
 
     // SCENE DATA
@@ -159,7 +132,7 @@ int main(int argc, char* argv[]) {
         double tps = now - prev;
         prev = now;
 
-        modelMat = glm::rotate(modelMat, glm::radians((float) (tps * 0.25)), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelMat = glm::rotate(modelMat, glm::radians((float) (tps * 0.1)), glm::vec3(0.0f, 1.0f, 0.0f));
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -180,18 +153,15 @@ int main(int argc, char* argv[]) {
     }
 
     textureData->drop();
-    
+
+    //shaderProgRes->drop();
+
+    /*
     glDeleteProgram(shaderProg);
     glDeleteShader(fragShader);
     glDeleteShader(vertShader);
-
-    benvolio->drop();
-
-    /*
-    glDeleteBuffers(1, &indexBufferObject);
-    glDeleteBuffers(1, &vertexBufferObject);
-    glDeleteVertexArrays(1, &vertexArrayObject);
     */
+    benvolio->drop();
     
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(sdlWindow);
