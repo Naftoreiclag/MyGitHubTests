@@ -77,6 +77,8 @@ public:
     bool load();
     bool unload();
 
+    void render();
+
     GLuint getHandle() const;
 };
 

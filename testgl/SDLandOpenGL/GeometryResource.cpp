@@ -153,6 +153,12 @@ bool GeometryResource::unload() {
     return true;
 }
 
+void GeometryResource::render() {
+    glBindVertexArray(mVertexArrayObject);
+    glDrawElements(GL_TRIANGLES, mNumTriangles * 3, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+}
+
 GLuint GeometryResource::getHandle() const {
     return mVertexArrayObject;
 }

@@ -163,7 +163,6 @@ int main(int argc, char* argv[]) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glBindVertexArray(benvolio->getHandle());
 
         glUseProgram(shaderProg);
 
@@ -175,9 +174,7 @@ int main(int argc, char* argv[]) {
         glBindTexture(GL_TEXTURE_2D, textureData->getHandle());
         glUniform1i(uTex, 0);
 
-        glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, 0);
-
-        glBindVertexArray(0);
+        benvolio->render();
 
         SDL_GL_SwapWindow(sdlWindow);
     }
