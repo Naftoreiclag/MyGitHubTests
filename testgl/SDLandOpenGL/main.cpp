@@ -49,6 +49,8 @@ int main(int argc, char* argv[]) {
     ResourceManager* resman = ResourceManager::getSingleton();
     resman->mapAll(resourceDef);
 
+    // SHADER DATA
+
     StringResource* vertText = resman->findString("Hello.vertexShader");
     StringResource* fragText = resman->findString("Hello.fragmentShader");
 
@@ -73,7 +75,9 @@ int main(int argc, char* argv[]) {
     glLinkProgram(shaderProg);
     glDetachShader(shaderProg, vertShader);
     glDetachShader(shaderProg, fragShader);
-    
+
+    // MESH DATA
+
     GLuint vertexArrayObject;
     glGenVertexArrays(1, &vertexArrayObject);
     glBindVertexArray(vertexArrayObject);
@@ -122,8 +126,12 @@ int main(int argc, char* argv[]) {
 
     glBindVertexArray(0);
 
+    // TEXTURE DATA
+
     TextureResource* textureData = resman->findTexture("GreenJellyfish.texture");
     textureData->grab();
+
+    // SCENE DATA
 
     GLint uModel = glGetUniformLocation(shaderProg, "uModel");
     GLint uView = glGetUniformLocation(shaderProg, "uView");

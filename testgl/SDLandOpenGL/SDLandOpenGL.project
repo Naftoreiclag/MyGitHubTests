@@ -16,6 +16,8 @@
     <File Name="StringResource.hpp"/>
     <File Name="TextureResource.cpp"/>
     <File Name="TextureResource.hpp"/>
+    <File Name="GeometryResource.cpp"/>
+    <File Name="GeometryResource.hpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
