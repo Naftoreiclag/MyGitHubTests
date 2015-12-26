@@ -40,8 +40,21 @@ bool ModelResource::load() {
     }
 
     mMaterial->grab();
-    mGeometry->mShaderProg = mMaterial->getShaderProg()->getHandle();
     mGeometry->grab();
+
+    glGenVertexArrays(1, &mVertexArrayObject);
+    glBindVertexArray(mVertexArrayObject);
+
+    mGeometry->bindBuffers();
+
+    GLint locationAttribute = glGetAttribLocation(mMaterial->getShaderProg()->getHandle(), "position");
+    mGeometry->enablePositionAttrib(locationAttribute);
+    GLint colorAttribute = glGetAttribLocation(mMaterial->getShaderProg()->getHandle(), "color");
+    mGeometry->enableColorAttrib(colorAttribute);
+    GLint texCoordAttribute = glGetAttribLocation(mMaterial->getShaderProg()->getHandle(), "texCoord");
+    mGeometry->enableTextureAttrib(texCoordAttribute);
+
+    glBindVertexArray(0);
 
     mLoaded = true;
     return true;
@@ -49,6 +62,8 @@ bool ModelResource::load() {
 bool ModelResource::unload() {
     mGeometry->drop();
     mMaterial->drop();
+
+    glDeleteVertexArrays(1, &mVertexArrayObject);
 
     mLoaded = false;
     return false;
@@ -61,14 +76,15 @@ void ModelResource::render(const glm::mat4& viewMat, const glm::mat4& projMat, c
     GLint uView = glGetUniformLocation(mMaterial->getShaderProg()->getHandle(), "uView");
     GLint uProj = glGetUniformLocation(mMaterial->getShaderProg()->getHandle(), "uProj");
 
-
     glUniformMatrix4fv(uView, 1, GL_FALSE, glm::value_ptr(viewMat));
     glUniformMatrix4fv(uProj, 1, GL_FALSE, glm::value_ptr(projMat));
     glUniformMatrix4fv(uModel, 1, GL_FALSE, glm::value_ptr(modelMat));
 
     mMaterial->bind();
 
+    glBindVertexArray(mVertexArrayObject);
     mGeometry->render();
+    glBindVertexArray(0);
 
     glUseProgram(0);
 }

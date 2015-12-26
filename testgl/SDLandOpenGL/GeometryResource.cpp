@@ -107,41 +107,19 @@ bool GeometryResource::load() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    glGenVertexArrays(1, &mVertexArrayObject);
-    glBindVertexArray(mVertexArrayObject);
-
-    this->bindBuffers();
-
-    GLint locationAttribute = glGetAttribLocation(mShaderProg, "position");
-    this->enablePositionAttrib(locationAttribute);
-    GLint colorAttribute = glGetAttribLocation(mShaderProg, "color");
-    this->enableColorAttrib(colorAttribute);
-    GLint texCoordAttribute = glGetAttribLocation(mShaderProg, "texCoord");
-    this->enableTextureAttrib(texCoordAttribute);
-    //GLint normalsAttribute = glGetAttribLocation(mShaderProg, "texCoord");
-
-    glBindVertexArray(0);
-
     return true;
 }
 
 bool GeometryResource::unload() {
     glDeleteBuffers(1, &mIndexBufferObject);
     glDeleteBuffers(1, &mVertexBufferObject);
-    glDeleteVertexArrays(1, &mVertexArrayObject);
 
     mLoaded = false;
     return true;
 }
 
 void GeometryResource::render() {
-    glBindVertexArray(mVertexArrayObject);
     glDrawElements(GL_TRIANGLES, mNumTriangles * 3, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
-}
-
-GLuint GeometryResource::getHandle() const {
-    return mVertexArrayObject;
 }
 
 void GeometryResource::bindBuffers() {

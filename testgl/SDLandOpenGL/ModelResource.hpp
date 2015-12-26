@@ -11,6 +11,7 @@ private:
 
     GeometryResource* mGeometry;
     MaterialResource* mMaterial;
+    GLuint mVertexArrayObject;
 public:
     ModelResource();
     virtual ~ModelResource();

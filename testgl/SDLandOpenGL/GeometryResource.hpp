@@ -68,7 +68,6 @@ private:
     uint32_t mNumVertices;
     uint32_t mNumTriangles;
 
-    GLuint mVertexArrayObject;
     GLuint mVertexBufferObject;
     GLuint mIndexBufferObject;
 
@@ -76,8 +75,6 @@ private:
 public:
     GeometryResource();
     virtual ~GeometryResource();
-
-    GLuint mShaderProg;
 
     bool load();
     bool unload();
