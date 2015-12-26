@@ -28,8 +28,6 @@ bool VertexShaderResource::load() {
     glShaderSource(mVertShader, 1, &vertSrc, 0);
     glCompileShader(mVertShader);
 
-    std::cout << vertSrcStr << std::endl;
-
     mLoaded = true;
     return true;
 }

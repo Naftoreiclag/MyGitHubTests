@@ -28,8 +28,6 @@ bool FragmentShaderResource::load() {
     glShaderSource(mFragShader, 1, &fragSrc, 0);
     glCompileShader(mFragShader);
 
-    std::cout << fragSrcStr << std::endl;
-
     mLoaded = true;
     return true;
 }
