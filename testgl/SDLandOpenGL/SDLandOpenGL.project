@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="SDLandOpenGL" InternalType="Console">
   <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00010001N0005Debug000000000000]]>
+    </Plugin>
     <Plugin Name="CMakePlugin">
       <![CDATA[[{
   "name": "Debug",
@@ -12,9 +15,6 @@
   "arguments": [],
   "parentProject": ""
  }]]]>
-    </Plugin>
-    <Plugin Name="qmake">
-      <![CDATA[00010001N0005Debug000000000000]]>
     </Plugin>
   </Plugins>
   <Description/>
@@ -45,6 +45,10 @@
       <File Name="FragmentShaderResource.cpp"/>
       <File Name="ShaderResource.hpp"/>
       <File Name="ShaderResource.cpp"/>
+      <File Name="MaterialResource.hpp"/>
+      <File Name="MaterialResource.cpp"/>
+      <File Name="ModelResource.hpp"/>
+      <File Name="ModelResource.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="SceneGraph">
       <File Name="SceneNode.hpp"/>

@@ -10,12 +10,23 @@
 #include "ShaderResource.hpp"
 
 class ShaderProgramResource : public Resource {
+public:
+    struct Sampler2DControl {
+        std::string name;
+        GLint handle;
+    };
+
+    const std::vector<Sampler2DControl>& getSampler2Ds() const;
+
 private:
+
     GLuint mShaderProg;
     bool mLoaded;
     std::string mFragOutSymbol;
 
     std::vector<ShaderResource*> mLinkedShaders;
+
+    std::vector<Sampler2DControl> mSampler2Ds;
 
 public:
     ShaderProgramResource();

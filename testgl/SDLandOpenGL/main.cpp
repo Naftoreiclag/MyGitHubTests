@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
         return -1;
     }
     
-    SDL_Window* sdlWindow = SDL_CreateWindow("Hello World", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_OPENGL);
+    SDL_Window* sdlWindow = SDL_CreateWindow("What, you egg?", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_OPENGL);
     
     if(!sdlWindow) {
         std::cout << "SDL Window Error" << std::endl;
@@ -106,6 +106,7 @@ int main(int argc, char* argv[]) {
         glUniform1i(uTex, 0);
 
         benvolio->render();
+        glUseProgram(0);
 
         SDL_GL_SwapWindow(sdlWindow);
     }

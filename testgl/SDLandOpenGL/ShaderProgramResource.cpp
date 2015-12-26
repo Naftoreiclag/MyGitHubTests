@@ -54,8 +54,28 @@ bool ShaderProgramResource::load() {
         glDetachShader(mShaderProg, shader->getHandle());
     }
 
+    const Json::Value& controls = progData["controls"];
+
+    const Json::Value& sampler2Ds = controls["sampler2D"];
+
+    for(Json::Value::const_iterator iter = sampler2Ds.begin(); iter != sampler2Ds.end(); ++ iter) {
+        const Json::Value& entry = *iter;
+
+        std::string name = entry.asString();
+
+        Sampler2DControl control;
+        control.name = entry.asString();
+        control.handle = glGetUniformLocation(mShaderProg, control.name.c_str());
+
+        mSampler2Ds.push_back(control);
+    }
+
     mLoaded = true;
     return true;
+}
+
+const std::vector<ShaderProgramResource::Sampler2DControl>& ShaderProgramResource::getSampler2Ds() const {
+    return mSampler2Ds;
 }
 
 bool ShaderProgramResource::unload() {
@@ -64,6 +84,7 @@ bool ShaderProgramResource::unload() {
         ShaderResource* shader = *iter;
         shader->drop();
     }
+    mLoaded = false;
     return true;
 }
 

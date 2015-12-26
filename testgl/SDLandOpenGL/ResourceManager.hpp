@@ -6,7 +6,9 @@
 #include <boost/filesystem.hpp>
 
 #include "ImageResource.hpp"
+#include "MaterialResource.hpp"
 #include "MiscResource.hpp"
+#include "ModelResource.hpp"
 #include "Resource.hpp"
 #include "StringResource.hpp"
 #include "TextureResource.hpp"
@@ -23,6 +25,8 @@ private:
     std::map<std::string, StringResource*> mStrings;
     std::map<std::string, ImageResource*> mImages;
     std::map<std::string, TextureResource*> mTextures;
+    std::map<std::string, ModelResource*> mModels;
+    std::map<std::string, MaterialResource*> mMaterials;
     std::map<std::string, GeometryResource*> mGeometries;
     std::map<std::string, ShaderResource*> mShaders;
     std::map<std::string, ShaderProgramResource*> mShaderPrograms;
@@ -42,6 +46,8 @@ public:
     StringResource* findString(std::string name);
     ImageResource* findImage(std::string name);
     TextureResource* findTexture(std::string name);
+    ModelResource* findModel(std::string name);
+    MaterialResource* findMaterial(std::string name);
     GeometryResource* findGeometry(std::string name);
     ShaderResource* findShader(std::string name);
     ShaderProgramResource* findShaderProgram(std::string name);
