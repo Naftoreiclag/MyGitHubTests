@@ -54,11 +54,6 @@ bool GeometryResource::load() {
     mUseUV = readBool(input);
     mUseNormals = readBool(input);
 
-    std::cout << "pos" << mUsePositions << std::endl;
-    std::cout << "col" << mUseColor << std::endl;
-    std::cout << "uv" << mUseUV << std::endl;
-    std::cout << "norm" << mUseNormals << std::endl;
-
     mNumVertices = readU32(input);
     mNumTriangles = readU32(input);
 
@@ -75,11 +70,6 @@ bool GeometryResource::load() {
             vertices[(i * sizeVertices) + positionOff + 0] = readF32(input);
             vertices[(i * sizeVertices) + positionOff + 1] = readF32(input);
             vertices[(i * sizeVertices) + positionOff + 2] = readF32(input);
-            /*
-            std::cout << " x: " << vertices[(i * sizeVertices) + positionOff + 0];
-            std::cout << " y: " << vertices[(i * sizeVertices) + positionOff + 1];
-            std::cout << " z: " << vertices[(i * sizeVertices) + positionOff + 2] << std::endl;
-            */
         }
         if(mUseColor) {
             vertices[(i * sizeVertices) + colorOff + 0] = readF32(input);
@@ -89,10 +79,6 @@ bool GeometryResource::load() {
         if(mUseUV) {
             vertices[(i * sizeVertices) + textureOff + 0] = readF32(input);
             vertices[(i * sizeVertices) + textureOff + 1] = readF32(input);
-            /*
-            std::cout << " u: " << vertices[(i * sizeVertices) + textureOff + 0];
-            std::cout << " v: " << vertices[(i * sizeVertices) + textureOff + 1] << std::endl;
-            */
         }
         if(mUseNormals) {
             vertices[(i * sizeVertices) + normalOff + 0] = readF32(input);
@@ -106,21 +92,26 @@ bool GeometryResource::load() {
         indices[(i * 3) + 0] = readU32(input);
         indices[(i * 3) + 1] = readU32(input);
         indices[(i * 3) + 2] = readU32(input);
-        /*
-        std::cout << " a: " << indices[(i * 3) + 0];
-        std::cout << " b: " << indices[(i * 3) + 1];
-        std::cout << " c: " << indices[(i * 3) + 2] << std::endl;
-        */
     }
 
     input.close();
 
-    glGenVertexArrays(1, &mVertexArrayObject);
-    glBindVertexArray(mVertexArrayObject);
 
     glGenBuffers(1, &mVertexBufferObject);
     glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    glGenBuffers(1, &mIndexBufferObject);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBufferObject);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    glGenVertexArrays(1, &mVertexArrayObject);
+    glBindVertexArray(mVertexArrayObject);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBufferObject);
 
     if(mUsePositions) {
         GLint locationAttribute = glGetAttribLocation(mShaderProg, "position");
@@ -148,24 +139,6 @@ bool GeometryResource::load() {
     }
     */
 
-    /*
-    for(int zxcv = 0; zxcv < mNumVertices; ++ zxcv) {
-        for(int asdf = 0; asdf < sizeVertices; ++ asdf) {
-            std::cout << " " << vertices[zxcv * sizeVertices + asdf];
-        }
-
-        std::cout << std::endl;
-
-    }
-    std::cout << sizeVertices << std::endl;
-    std::cout << positionOff << std::endl;
-    std::cout << textureOff << std::endl;
-    */
-
-    glGenBuffers(1, &mIndexBufferObject);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBufferObject);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
     glBindVertexArray(0);
 
     return true;
@@ -188,4 +161,8 @@ void GeometryResource::render() {
 
 GLuint GeometryResource::getHandle() const {
     return mVertexArrayObject;
+}
+
+void GeometryResource::bindBuffers() {
+
 }
