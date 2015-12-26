@@ -79,7 +79,11 @@ void ResourceManager::mapAll(boost::filesystem::path dataPackFile) {
 }
 
 StringResource* ResourceManager::findString(std::string name) {
-    return mStrings[name];
+    StringResource* ret = mStrings[name];
+    if(!ret) {
+        std::cout << "String error" << std::endl;
+    }
+    return ret;
 }
 ImageResource* ResourceManager::findImage(std::string name) {
     return mImages[name];
@@ -97,8 +101,17 @@ GeometryResource* ResourceManager::findGeometry(std::string name) {
     return mGeometries[name];
 }
 ShaderResource* ResourceManager::findShader(std::string name) {
-    return mShaders[name];
+    ShaderResource* ret = mShaders[name];
+    if(!ret) {
+        std::cout << "Shader error" << std::endl;
+    }
+    return ret;
 }
 ShaderProgramResource* ResourceManager::findShaderProgram(std::string name) {
-    return mShaderPrograms[name];
+    ShaderProgramResource* ret = mShaderPrograms[name];
+    if(!ret) {
+        std::cout << "Shader program error" << std::endl;
+        std::cout << name << std::endl;
+    }
+    return ret;
 }

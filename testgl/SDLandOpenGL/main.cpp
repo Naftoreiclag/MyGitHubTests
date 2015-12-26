@@ -54,19 +54,23 @@ int main(int argc, char* argv[]) {
 
     ShaderProgramResource* shaderProg = resman->findShaderProgram("Hello.shaderProgram");
     shaderProg->grab();
-    // MESH DATA
-
-    GeometryResource* benvolio = resman->findGeometry("Cube.geometry");
-    benvolio->mShaderProg = shaderProg->getHandle();
-    benvolio->grab();
 
     // TEXTURE DATA
 
     TextureResource* textureData = resman->findTexture("128Rose.texture");
     textureData->grab();
 
-    // SCENE DATA
+    MaterialResource* matRes = resman->findMaterial("128Rose.material");
+    matRes->grab();
 
+    // MESH DATA
+
+    GeometryResource* benvolio = resman->findGeometry("Cube.geometry");
+    benvolio->mShaderProg = shaderProg->getHandle();
+    benvolio->grab();
+
+
+    // SCENE DATA
     GLint uModel = glGetUniformLocation(shaderProg->getHandle(), "uModel");
     GLint uView = glGetUniformLocation(shaderProg->getHandle(), "uView");
     GLint uProj = glGetUniformLocation(shaderProg->getHandle(), "uProj");
@@ -95,26 +99,27 @@ int main(int argc, char* argv[]) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        //benvolio->render(viewMat, projMat, modelMat);
         glUseProgram(shaderProg->getHandle());
 
         glUniformMatrix4fv(uView, 1, GL_FALSE, glm::value_ptr(viewMat));
         glUniformMatrix4fv(uProj, 1, GL_FALSE, glm::value_ptr(projMat));
         glUniformMatrix4fv(uModel, 1, GL_FALSE, glm::value_ptr(modelMat));
-
+/*
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureData->getHandle());
         glUniform1i(uTex, 0);
+        */
+
+        matRes->bind();
 
         benvolio->render();
         glUseProgram(0);
-
         SDL_GL_SwapWindow(sdlWindow);
     }
-
     textureData->drop();
 
     shaderProg->drop();
-
     benvolio->drop();
     
     SDL_GL_DeleteContext(glContext);
