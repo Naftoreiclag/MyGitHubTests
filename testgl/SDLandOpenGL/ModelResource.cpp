@@ -39,15 +39,16 @@ bool ModelResource::load() {
         break;
     }
 
-    mGeometry->grab();
     mMaterial->grab();
+    mGeometry->mShaderProg = mMaterial->getShaderProg()->getHandle();
+    mGeometry->grab();
 
     mLoaded = true;
     return true;
 }
 bool ModelResource::unload() {
-    mMaterial->drop();
     mGeometry->drop();
+    mMaterial->drop();
 
     mLoaded = false;
     return false;

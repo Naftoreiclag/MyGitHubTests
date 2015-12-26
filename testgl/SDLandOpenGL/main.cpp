@@ -51,30 +51,32 @@ int main(int argc, char* argv[]) {
     SceneNode rootNode;
 
     // SHADER DATA
-
     ShaderProgramResource* shaderProg = resman->findShaderProgram("Hello.shaderProgram");
     shaderProg->grab();
 
     // TEXTURE DATA
-
-    TextureResource* textureData = resman->findTexture("128Rose.texture");
-    textureData->grab();
 
     MaterialResource* matRes = resman->findMaterial("128Rose.material");
     matRes->grab();
 
     // MESH DATA
 
+    ModelResource* benvolio = resman->findModel("RoseCube.model");
+    benvolio->grab();
+
+    /*
     GeometryResource* benvolio = resman->findGeometry("Cube.geometry");
     benvolio->mShaderProg = shaderProg->getHandle();
     benvolio->grab();
+    */
 
 
     // SCENE DATA
+    /*
     GLint uModel = glGetUniformLocation(shaderProg->getHandle(), "uModel");
     GLint uView = glGetUniformLocation(shaderProg->getHandle(), "uView");
     GLint uProj = glGetUniformLocation(shaderProg->getHandle(), "uProj");
-    GLint uTex = glGetUniformLocation(shaderProg->getHandle(), "ambientTex");
+    */
 
     glm::mat4 viewMat = glm::lookAt(glm::vec3(0.f, 2.f, -2.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
     glm::mat4 projMat = glm::perspective(glm::radians(90.f), 1280.f / 720.f, 1.f, 10.f);
@@ -99,27 +101,23 @@ int main(int argc, char* argv[]) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        //benvolio->render(viewMat, projMat, modelMat);
+        benvolio->render(viewMat, projMat, modelMat);
+        /*
         glUseProgram(shaderProg->getHandle());
 
         glUniformMatrix4fv(uView, 1, GL_FALSE, glm::value_ptr(viewMat));
         glUniformMatrix4fv(uProj, 1, GL_FALSE, glm::value_ptr(projMat));
         glUniformMatrix4fv(uModel, 1, GL_FALSE, glm::value_ptr(modelMat));
-/*
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureData->getHandle());
-        glUniform1i(uTex, 0);
-        */
 
         matRes->bind();
 
         benvolio->render();
         glUseProgram(0);
+        */
         SDL_GL_SwapWindow(sdlWindow);
     }
-    textureData->drop();
 
-    shaderProg->drop();
+    //shaderProg->drop();
     benvolio->drop();
     
     SDL_GL_DeleteContext(glContext);
