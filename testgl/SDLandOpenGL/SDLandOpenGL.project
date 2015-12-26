@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="SDLandOpenGL" InternalType="Console">
+  <Plugins>
+    <Plugin Name="CMakePlugin">
+      <![CDATA[[{
+  "name": "Debug",
+  "enabled": false,
+  "buildDirectory": "build",
+  "sourceDirectory": "$(ProjectPath)",
+  "generator": "",
+  "buildType": "",
+  "arguments": [],
+  "parentProject": ""
+ }]]]>
+    </Plugin>
+    <Plugin Name="qmake">
+      <![CDATA[00010001N0005Debug000000000000]]>
+    </Plugin>
+  </Plugins>
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
@@ -29,6 +46,15 @@
       <File Name="ShaderResource.hpp"/>
       <File Name="ShaderResource.cpp"/>
     </VirtualDirectory>
+    <VirtualDirectory Name="SceneGraph">
+      <File Name="SceneNode.hpp"/>
+      <File Name="SceneNode.cpp"/>
+    </VirtualDirectory>
+  </VirtualDirectory>
+  <VirtualDirectory Name="libraries">
+    <VirtualDirectory Name="jsoncpp">
+      <File Name="../../libraries/jsoncpp/dist/jsoncpp.cpp"/>
+    </VirtualDirectory>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
@@ -41,7 +67,7 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
     <Configuration Name="Debug" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-O0;-Wall" C_Options="-g;-O0;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-g;-O0;-std=c++11;-Wall" C_Options="-g;-O0;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
         <IncludePath Value="../../libraries/jsoncpp/dist"/>
         <IncludePath Value="../../libraries/stb"/>
@@ -127,9 +153,4 @@
       </Completion>
     </Configuration>
   </Settings>
-  <VirtualDirectory Name="libraries">
-    <VirtualDirectory Name="jsoncpp">
-      <File Name="../../libraries/jsoncpp/dist/jsoncpp.cpp"/>
-    </VirtualDirectory>
-  </VirtualDirectory>
 </CodeLite_Project>

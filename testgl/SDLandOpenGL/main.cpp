@@ -7,6 +7,7 @@
 #include <SDL2/SDL.h>
 
 #include "ResourceManager.hpp"
+#include "SceneNode.hpp"
     
 int main(int argc, char* argv[]) {
 
@@ -46,59 +47,17 @@ int main(int argc, char* argv[]) {
     ResourceManager* resman = ResourceManager::getSingleton();
     resman->mapAll(resourceDef);
 
+    // SCENE GRAPH DATA
+    SceneNode rootNode;
+
     // SHADER DATA
 
-    /*
-    StringResource* vertText = resman->findString("Hello.vertexShader");
-    StringResource* fragText = resman->findString("Hello.fragmentShader");
-
-    vertText->grab();
-    fragText->grab();
-
-    const GLchar* vertSrc = vertText->getString().c_str();
-    const GLchar* fragSrc = fragText->getString().c_str();
-
-    GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertShader, 1, &vertSrc, 0);
-    glCompileShader(vertShader);
-
-    GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragShader, 1, &fragSrc, 0);
-    glCompileShader(fragShader);
-
-    GLuint shaderProg = glCreateProgram();
-    glAttachShader(shaderProg, vertShader);
-    glAttachShader(shaderProg, fragShader);
-    glBindFragDataLocation(shaderProg, 0, "fragColor");
-    glLinkProgram(shaderProg);
-    glDetachShader(shaderProg, vertShader);
-    glDetachShader(shaderProg, fragShader);
-
-    */
-
-    VertexShaderResource* vertexShaderRes = (VertexShaderResource*) resman->findShader("Hello.vertexShader");
-    FragmentShaderResource* fragShaderRes = (FragmentShaderResource*) resman->findShader("Hello.fragmentShader");
-    fragShaderRes->grab();
-    vertexShaderRes->grab();
-
-    GLuint shaderProg = glCreateProgram();
-    glAttachShader(shaderProg, vertexShaderRes->getHandle());
-    glAttachShader(shaderProg, fragShaderRes->getHandle());
-    glBindFragDataLocation(shaderProg, 0, "fragColor");
-    glLinkProgram(shaderProg);
-    glDetachShader(shaderProg, vertexShaderRes->getHandle());
-    glDetachShader(shaderProg, fragShaderRes->getHandle());
-
-    /*
-    ShaderProgramResource* shaderProgRes = resman->findShaderProgram("Hello.shaderProgram");
-    shaderProgRes->grab();
-    GLuint shaderProg = shaderProgRes->getHandle();
-    */
-
+    ShaderProgramResource* shaderProg = resman->findShaderProgram("Hello.shaderProgram");
+    shaderProg->grab();
     // MESH DATA
 
     GeometryResource* benvolio = resman->findGeometry("Cube.geometry");
-    benvolio->mShaderProg = shaderProg;
+    benvolio->mShaderProg = shaderProg->getHandle();
     benvolio->grab();
 
     // TEXTURE DATA
@@ -108,10 +67,10 @@ int main(int argc, char* argv[]) {
 
     // SCENE DATA
 
-    GLint uModel = glGetUniformLocation(shaderProg, "uModel");
-    GLint uView = glGetUniformLocation(shaderProg, "uView");
-    GLint uProj = glGetUniformLocation(shaderProg, "uProj");
-    GLint uTex = glGetUniformLocation(shaderProg, "ambientTex");
+    GLint uModel = glGetUniformLocation(shaderProg->getHandle(), "uModel");
+    GLint uView = glGetUniformLocation(shaderProg->getHandle(), "uView");
+    GLint uProj = glGetUniformLocation(shaderProg->getHandle(), "uProj");
+    GLint uTex = glGetUniformLocation(shaderProg->getHandle(), "ambientTex");
 
     glm::mat4 viewMat = glm::lookAt(glm::vec3(0.f, 2.f, -2.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
     glm::mat4 projMat = glm::perspective(glm::radians(90.f), 1280.f / 720.f, 1.f, 10.f);
@@ -136,8 +95,7 @@ int main(int argc, char* argv[]) {
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-        glUseProgram(shaderProg);
+        glUseProgram(shaderProg->getHandle());
 
         glUniformMatrix4fv(uView, 1, GL_FALSE, glm::value_ptr(viewMat));
         glUniformMatrix4fv(uProj, 1, GL_FALSE, glm::value_ptr(projMat));
@@ -154,13 +112,8 @@ int main(int argc, char* argv[]) {
 
     textureData->drop();
 
-    //shaderProgRes->drop();
+    shaderProg->drop();
 
-    /*
-    glDeleteProgram(shaderProg);
-    glDeleteShader(fragShader);
-    glDeleteShader(vertShader);
-    */
     benvolio->drop();
     
     SDL_GL_DeleteContext(glContext);
