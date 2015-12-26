@@ -57,33 +57,33 @@ bool GeometryResource::load() {
     mNumVertices = readU32(input);
     mNumTriangles = readU32(input);
 
-    uint32_t positionOff = 0;
-    uint32_t colorOff = positionOff + (mUsePositions ? 3 : 0);
-    uint32_t textureOff = colorOff + (mUseColor ? 3 : 0);
-    uint32_t normalOff = textureOff + (mUseUV ? 2 : 0);
-    uint32_t sizeVertices = normalOff + (mUseNormals ? 3 : 0);
+    mPositionOff = 0;
+    mColorOff = mPositionOff + (mUsePositions ? 3 : 0);
+    mTextureOff = mColorOff + (mUseColor ? 3 : 0);
+    mNormalOff = mTextureOff + (mUseUV ? 2 : 0);
+    mSizeVertices = mNormalOff + (mUseNormals ? 3 : 0);
 
-    GLfloat vertices[mNumVertices * sizeVertices];
+    GLfloat vertices[mNumVertices * mSizeVertices];
 
     for(uint32_t i = 0; i < mNumVertices; ++ i) {
         if(mUsePositions) {
-            vertices[(i * sizeVertices) + positionOff + 0] = readF32(input);
-            vertices[(i * sizeVertices) + positionOff + 1] = readF32(input);
-            vertices[(i * sizeVertices) + positionOff + 2] = readF32(input);
+            vertices[(i * mSizeVertices) + mPositionOff + 0] = readF32(input);
+            vertices[(i * mSizeVertices) + mPositionOff + 1] = readF32(input);
+            vertices[(i * mSizeVertices) + mPositionOff + 2] = readF32(input);
         }
         if(mUseColor) {
-            vertices[(i * sizeVertices) + colorOff + 0] = readF32(input);
-            vertices[(i * sizeVertices) + colorOff + 1] = readF32(input);
-            vertices[(i * sizeVertices) + colorOff + 2] = readF32(input);
+            vertices[(i * mSizeVertices) + mColorOff + 0] = readF32(input);
+            vertices[(i * mSizeVertices) + mColorOff + 1] = readF32(input);
+            vertices[(i * mSizeVertices) + mColorOff + 2] = readF32(input);
         }
         if(mUseUV) {
-            vertices[(i * sizeVertices) + textureOff + 0] = readF32(input);
-            vertices[(i * sizeVertices) + textureOff + 1] = readF32(input);
+            vertices[(i * mSizeVertices) + mTextureOff + 0] = readF32(input);
+            vertices[(i * mSizeVertices) + mTextureOff + 1] = readF32(input);
         }
         if(mUseNormals) {
-            vertices[(i * sizeVertices) + normalOff + 0] = readF32(input);
-            vertices[(i * sizeVertices) + normalOff + 1] = readF32(input);
-            vertices[(i * sizeVertices) + normalOff + 2] = readF32(input);
+            vertices[(i * mSizeVertices) + mNormalOff + 0] = readF32(input);
+            vertices[(i * mSizeVertices) + mNormalOff + 1] = readF32(input);
+            vertices[(i * mSizeVertices) + mNormalOff + 2] = readF32(input);
         }
     }
 
@@ -110,34 +110,15 @@ bool GeometryResource::load() {
     glGenVertexArrays(1, &mVertexArrayObject);
     glBindVertexArray(mVertexArrayObject);
 
-    glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBufferObject);
+    this->bindBuffers();
 
-    if(mUsePositions) {
-        GLint locationAttribute = glGetAttribLocation(mShaderProg, "position");
-        glEnableVertexAttribArray(locationAttribute);
-        glVertexAttribPointer(locationAttribute, 3, GL_FLOAT, GL_FALSE, sizeVertices * sizeof(GLfloat), (void*) (positionOff * sizeof(GLfloat)));
-    }
-
-    if(mUseColor) {
-        GLint colorAttribute = glGetAttribLocation(mShaderProg, "color");
-        glEnableVertexAttribArray(colorAttribute);
-        glVertexAttribPointer(colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeVertices * sizeof(GLfloat), (void*) (colorOff * sizeof(GLfloat)));
-    }
-
-    if(mUseUV) {
-        GLint texCoordAttribute = glGetAttribLocation(mShaderProg, "texCoord");
-        glEnableVertexAttribArray(texCoordAttribute);
-        glVertexAttribPointer(texCoordAttribute, 2, GL_FLOAT, GL_FALSE, sizeVertices * sizeof(GLfloat), (void*) (textureOff * sizeof(GLfloat)));
-    }
-
-    /*
-    if(mUseNormals) {
-        GLint normalsAttribute = glGetAttribLocation(mShaderProg, "texCoord");
-        glEnableVertexAttribArray(normalsAttribute);
-        glVertexAttribPointer(normalsAttribute, 3, GL_FLOAT, GL_FALSE, sizeVertices * sizeof(GLfloat), (void*) normalOff);
-    }
-    */
+    GLint locationAttribute = glGetAttribLocation(mShaderProg, "position");
+    this->enablePositionAttrib(locationAttribute);
+    GLint colorAttribute = glGetAttribLocation(mShaderProg, "color");
+    this->enableColorAttrib(colorAttribute);
+    GLint texCoordAttribute = glGetAttribLocation(mShaderProg, "texCoord");
+    this->enableTextureAttrib(texCoordAttribute);
+    //GLint normalsAttribute = glGetAttribLocation(mShaderProg, "texCoord");
 
     glBindVertexArray(0);
 
@@ -164,5 +145,30 @@ GLuint GeometryResource::getHandle() const {
 }
 
 void GeometryResource::bindBuffers() {
-
+    glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBufferObject);
+}
+void GeometryResource::enablePositionAttrib(GLint posAttrib) {
+    if(mUsePositions) {
+        glEnableVertexAttribArray(posAttrib);
+        glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, mSizeVertices * sizeof(GLfloat), (void*) (mPositionOff * sizeof(GLfloat)));
+    }
+}
+void GeometryResource::enableColorAttrib(GLint colorAttrib) {
+    if(mUseColor) {
+        glEnableVertexAttribArray(colorAttrib);
+        glVertexAttribPointer(colorAttrib, 3, GL_FLOAT, GL_FALSE, mSizeVertices * sizeof(GLfloat), (void*) (mColorOff * sizeof(GLfloat)));
+    }
+}
+void GeometryResource::enableTextureAttrib(GLint textureAttrib) {
+    if(mUseUV) {
+        glEnableVertexAttribArray(textureAttrib);
+        glVertexAttribPointer(textureAttrib, 2, GL_FLOAT, GL_FALSE, mSizeVertices * sizeof(GLfloat), (void*) (mTextureOff * sizeof(GLfloat)));
+    }
+}
+void GeometryResource::enableNormalAttrib(GLint normalAttrib) {
+    if(mUseNormals) {
+        glEnableVertexAttribArray(normalAttrib);
+        glVertexAttribPointer(normalAttrib, 3, GL_FLOAT, GL_FALSE, mSizeVertices * sizeof(GLfloat), (void*) (mNormalOff * sizeof(GLfloat)));
+    }
 }

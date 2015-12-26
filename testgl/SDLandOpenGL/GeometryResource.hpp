@@ -59,6 +59,11 @@ private:
     bool mUseNormals;
     bool mUsePositions;
 
+    uint32_t mPositionOff;
+    uint32_t mColorOff;
+    uint32_t mTextureOff;
+    uint32_t mNormalOff;
+    uint32_t mSizeVertices;
 
     uint32_t mNumVertices;
     uint32_t mNumTriangles;
@@ -79,6 +84,10 @@ public:
 
     void render();
     void bindBuffers();
+    void enablePositionAttrib(GLint posAttrib);
+    void enableColorAttrib(GLint colorAttrib);
+    void enableTextureAttrib(GLint textureAttrib);
+    void enableNormalAttrib(GLint normalAttrib);
 
     GLuint getHandle() const;
 };
