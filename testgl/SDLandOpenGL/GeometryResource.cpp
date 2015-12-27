@@ -87,7 +87,7 @@ bool GeometryResource::load() {
         }
     }
 
-    GLint indices[mNumTriangles * 3];
+    GLuint indices[mNumTriangles * 3];
     for(uint32_t i = 0; i < mNumTriangles; ++ i) {
         indices[(i * 3) + 0] = readU32(input);
         indices[(i * 3) + 1] = readU32(input);
@@ -126,25 +126,25 @@ void GeometryResource::bindBuffers() {
     glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBufferObject);
 }
-void GeometryResource::enablePositionAttrib(GLint posAttrib) {
+void GeometryResource::enablePositionAttrib(GLuint posAttrib) {
     if(mUsePositions) {
         glEnableVertexAttribArray(posAttrib);
         glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, mSizeVertices * sizeof(GLfloat), (void*) (mPositionOff * sizeof(GLfloat)));
     }
 }
-void GeometryResource::enableColorAttrib(GLint colorAttrib) {
+void GeometryResource::enableColorAttrib(GLuint colorAttrib) {
     if(mUseColor) {
         glEnableVertexAttribArray(colorAttrib);
         glVertexAttribPointer(colorAttrib, 3, GL_FLOAT, GL_FALSE, mSizeVertices * sizeof(GLfloat), (void*) (mColorOff * sizeof(GLfloat)));
     }
 }
-void GeometryResource::enableTextureAttrib(GLint textureAttrib) {
+void GeometryResource::enableTextureAttrib(GLuint textureAttrib) {
     if(mUseUV) {
         glEnableVertexAttribArray(textureAttrib);
         glVertexAttribPointer(textureAttrib, 2, GL_FLOAT, GL_FALSE, mSizeVertices * sizeof(GLfloat), (void*) (mTextureOff * sizeof(GLfloat)));
     }
 }
-void GeometryResource::enableNormalAttrib(GLint normalAttrib) {
+void GeometryResource::enableNormalAttrib(GLuint normalAttrib) {
     if(mUseNormals) {
         glEnableVertexAttribArray(normalAttrib);
         glVertexAttribPointer(normalAttrib, 3, GL_FLOAT, GL_FALSE, mSizeVertices * sizeof(GLfloat), (void*) (mNormalOff * sizeof(GLfloat)));

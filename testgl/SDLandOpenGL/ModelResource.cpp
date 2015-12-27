@@ -47,11 +47,11 @@ bool ModelResource::load() {
 
     mGeometry->bindBuffers();
 
-    GLint locationAttribute = glGetAttribLocation(mMaterial->getShaderProg()->getHandle(), "position");
+    GLuint locationAttribute = glGetAttribLocation(mMaterial->getShaderProg()->getHandle(), "position");
     mGeometry->enablePositionAttrib(locationAttribute);
-    GLint colorAttribute = glGetAttribLocation(mMaterial->getShaderProg()->getHandle(), "color");
+    GLuint colorAttribute = glGetAttribLocation(mMaterial->getShaderProg()->getHandle(), "color");
     mGeometry->enableColorAttrib(colorAttribute);
-    GLint texCoordAttribute = glGetAttribLocation(mMaterial->getShaderProg()->getHandle(), "texCoord");
+    GLuint texCoordAttribute = glGetAttribLocation(mMaterial->getShaderProg()->getHandle(), "texCoord");
     mGeometry->enableTextureAttrib(texCoordAttribute);
 
     glBindVertexArray(0);
@@ -72,9 +72,9 @@ bool ModelResource::unload() {
 void ModelResource::render(const glm::mat4& viewMat, const glm::mat4& projMat, const glm::mat4& modelMat) {
     glUseProgram(mMaterial->getShaderProg()->getHandle());
 
-    GLint uModel = glGetUniformLocation(mMaterial->getShaderProg()->getHandle(), "uModel");
-    GLint uView = glGetUniformLocation(mMaterial->getShaderProg()->getHandle(), "uView");
-    GLint uProj = glGetUniformLocation(mMaterial->getShaderProg()->getHandle(), "uProj");
+    GLuint uModel = glGetUniformLocation(mMaterial->getShaderProg()->getHandle(), "uModel");
+    GLuint uView = glGetUniformLocation(mMaterial->getShaderProg()->getHandle(), "uView");
+    GLuint uProj = glGetUniformLocation(mMaterial->getShaderProg()->getHandle(), "uProj");
 
     glUniformMatrix4fv(uView, 1, GL_FALSE, glm::value_ptr(viewMat));
     glUniformMatrix4fv(uProj, 1, GL_FALSE, glm::value_ptr(projMat));

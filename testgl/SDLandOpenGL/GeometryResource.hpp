@@ -81,10 +81,10 @@ public:
 
     void render();
     void bindBuffers();
-    void enablePositionAttrib(GLint posAttrib);
-    void enableColorAttrib(GLint colorAttrib);
-    void enableTextureAttrib(GLint textureAttrib);
-    void enableNormalAttrib(GLint normalAttrib);
+    void enablePositionAttrib(GLuint posAttrib);
+    void enableColorAttrib(GLuint colorAttrib);
+    void enableTextureAttrib(GLuint textureAttrib);
+    void enableNormalAttrib(GLuint normalAttrib);
 
     GLuint getHandle() const;
 };

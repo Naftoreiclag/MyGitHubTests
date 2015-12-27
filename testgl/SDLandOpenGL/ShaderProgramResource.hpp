@@ -13,7 +13,7 @@ class ShaderProgramResource : public Resource {
 public:
     struct Sampler2DControl {
         std::string name;
-        GLint handle;
+        GLuint handle;
     };
 
     const std::vector<Sampler2DControl>& getSampler2Ds() const;
