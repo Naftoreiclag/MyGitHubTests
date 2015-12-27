@@ -15,3 +15,4 @@ testgl/Makefile
 
 resources/*
 libraries/*
+/runDebug.sh
