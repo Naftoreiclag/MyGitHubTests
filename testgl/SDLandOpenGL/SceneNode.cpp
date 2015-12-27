@@ -26,9 +26,9 @@ const glm::mat4& SceneNode::calcLocalTransform() {
     }
 
     mLocalTransform =
-        glm::scale(glm::mat4(1.f), mLocalScale) *
+        glm::translate(glm::mat4(1.f), mLocalTranslation) *
         glm::mat4_cast(mLocalOrientation) *
-        glm::translate(glm::mat4(1.f), mLocalTranslation);
+        glm::scale(glm::mat4(1.f), mLocalScale);
 
     mLocalTransformDirty = false;
     mWorldTransformDirty = true;

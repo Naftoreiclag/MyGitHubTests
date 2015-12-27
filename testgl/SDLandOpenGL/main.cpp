@@ -68,15 +68,16 @@ int main(int argc, char* argv[]) {
 
         uint32_t now = SDL_GetTicks();
         double tps = now - prev;
+        tps /= 1000;
         prev = now;
 
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        modelMat = glm::rotate(modelMat, glm::radians((float) (tps * 0.1)), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelMat = glm::rotate(modelMat, (float) tps, glm::vec3(0.0f, 1.0f, 0.0f));
 
-        rootNode.rotate(glm::vec3(0.0f, 1.0f, 0.0f), glm::radians((float) (tps * 0.1)));
-        rootNode.move(glm::vec3(0.f, 0.f, 0.f));
+        rootNode.rotate(glm::vec3(0.0f, 1.0f, 0.0f), (float) tps);
+        rootNode.move(glm::vec3(0.f, 0.f, (float) (tps * 0.3)));
         rootNode.render(viewMat, projMat);
 
 
