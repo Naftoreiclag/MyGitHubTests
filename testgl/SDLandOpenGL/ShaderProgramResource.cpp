@@ -54,6 +54,10 @@ bool ShaderProgramResource::load() {
         glDetachShader(mShaderProg, shader->getHandle());
     }
 
+    const Json::Value& matrices = progData["matrices"];
+
+
+
     const Json::Value& controls = progData["controls"];
 
     const Json::Value& sampler2Ds = controls["sampler2D"];
