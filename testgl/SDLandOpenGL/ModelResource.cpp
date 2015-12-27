@@ -70,15 +70,19 @@ bool ModelResource::unload() {
 }
 
 void ModelResource::render(const glm::mat4& viewMat, const glm::mat4& projMat, const glm::mat4& modelMat) {
-    glUseProgram(mMaterial->getShaderProg()->getHandle());
+    const ShaderProgramResource* shaderProg = mMaterial->getShaderProg();
 
-    GLuint uModel = glGetUniformLocation(mMaterial->getShaderProg()->getHandle(), "uModel");
-    GLuint uView = glGetUniformLocation(mMaterial->getShaderProg()->getHandle(), "uView");
-    GLuint uProj = glGetUniformLocation(mMaterial->getShaderProg()->getHandle(), "uProj");
+    glUseProgram(shaderProg->getHandle());
 
-    glUniformMatrix4fv(uView, 1, GL_FALSE, glm::value_ptr(viewMat));
-    glUniformMatrix4fv(uProj, 1, GL_FALSE, glm::value_ptr(projMat));
-    glUniformMatrix4fv(uModel, 1, GL_FALSE, glm::value_ptr(modelMat));
+    if(shaderProg->needsModelMatrix()) {
+        glUniformMatrix4fv(shaderProg->getModelMatrixUnif(), 1, GL_FALSE, glm::value_ptr(modelMat));
+    }
+    if(shaderProg->needsViewMatrix()) {
+        glUniformMatrix4fv(shaderProg->getViewMatrixUnif(), 1, GL_FALSE, glm::value_ptr(viewMat));
+    }
+    if(shaderProg->needsProjMatrix()) {
+        glUniformMatrix4fv(shaderProg->getProjMatrixUnif(), 1, GL_FALSE, glm::value_ptr(projMat));
+    }
 
     mMaterial->bind();
 

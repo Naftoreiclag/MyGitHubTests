@@ -28,6 +28,15 @@ private:
 
     std::vector<Sampler2DControl> mSampler2Ds;
 
+    bool mUseModelMatrix;
+    GLuint mModelMatrixUnif;
+
+    bool mUseViewMatrix;
+    GLuint mViewMatrixUnif;
+
+    bool mUseProjMatrix;
+    GLuint mProjMatrixUnif;
+
 public:
     ShaderProgramResource();
     virtual ~ShaderProgramResource();
@@ -36,6 +45,12 @@ public:
     bool unload();
     
     GLuint getHandle() const;
+    bool needsModelMatrix() const;
+    bool needsViewMatrix() const;
+    bool needsProjMatrix() const;
+    GLuint getModelMatrixUnif() const;
+    GLuint getViewMatrixUnif() const;
+    GLuint getProjMatrixUnif() const;
 
 };
 
