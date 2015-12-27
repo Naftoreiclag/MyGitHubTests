@@ -27,7 +27,7 @@ public:
     bool load();
     bool unload();
 
-    void bind();
+    void bindTextures();
 
     const ShaderProgramResource* getShaderProg() const;
 };

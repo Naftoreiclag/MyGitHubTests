@@ -47,12 +47,20 @@ bool ModelResource::load() {
 
     mGeometry->bindBuffers();
 
-    GLuint locationAttribute = glGetAttribLocation(mMaterial->getShaderProg()->getHandle(), "position");
-    mGeometry->enablePositionAttrib(locationAttribute);
-    GLuint colorAttribute = glGetAttribLocation(mMaterial->getShaderProg()->getHandle(), "color");
-    mGeometry->enableColorAttrib(colorAttribute);
-    GLuint texCoordAttribute = glGetAttribLocation(mMaterial->getShaderProg()->getHandle(), "texCoord");
-    mGeometry->enableTextureAttrib(texCoordAttribute);
+    const ShaderProgramResource* shaderProg = mMaterial->getShaderProg();
+
+    if(shaderProg->needsPosAttrib()) {
+        mGeometry->enablePositionAttrib(shaderProg->getPosAttrib());
+    }
+    if(shaderProg->needsColorAttrib()) {
+        mGeometry->enableColorAttrib(shaderProg->getColorAttrib());
+    }
+    if(shaderProg->needsUVAttrib()) {
+        mGeometry->enableTextureAttrib(shaderProg->getUVAttrib());
+    }
+    if(shaderProg->needsNormalAttrib()) {
+        mGeometry->enableNormalAttrib(shaderProg->getNormalAttrib());
+    }
 
     glBindVertexArray(0);
 
@@ -84,7 +92,7 @@ void ModelResource::render(const glm::mat4& viewMat, const glm::mat4& projMat, c
         glUniformMatrix4fv(shaderProg->getProjMatrixUnif(), 1, GL_FALSE, glm::value_ptr(projMat));
     }
 
-    mMaterial->bind();
+    mMaterial->bindTextures();
 
     glBindVertexArray(mVertexArrayObject);
     mGeometry->render();

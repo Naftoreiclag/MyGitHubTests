@@ -37,6 +37,18 @@ private:
     bool mUseProjMatrix;
     GLuint mProjMatrixUnif;
 
+    bool mUsePosAttrib;
+    GLuint mPosAttrib;
+
+    bool mUseColorAttrib;
+    GLuint mColorAttrib;
+
+    bool mUseUVAttrib;
+    GLuint mUVAttrib;
+
+    bool mUseNormalAttrib;
+    GLuint mNormalAttrib;
+
 public:
     ShaderProgramResource();
     virtual ~ShaderProgramResource();
@@ -48,9 +60,17 @@ public:
     bool needsModelMatrix() const;
     bool needsViewMatrix() const;
     bool needsProjMatrix() const;
+    bool needsPosAttrib() const;
+    bool needsColorAttrib() const;
+    bool needsUVAttrib() const;
+    bool needsNormalAttrib() const;
     GLuint getModelMatrixUnif() const;
     GLuint getViewMatrixUnif() const;
     GLuint getProjMatrixUnif() const;
+    GLuint getPosAttrib() const;
+    GLuint getColorAttrib() const;
+    GLuint getUVAttrib() const;
+    GLuint getNormalAttrib() const;
 
 };
 

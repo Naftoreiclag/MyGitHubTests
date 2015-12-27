@@ -72,22 +72,16 @@ bool MaterialResource::unload() {
     return true;
 }
 
-void MaterialResource::bind() {
-
-    //glUseProgram(mShaderProg->getHandle());
-    {
-        unsigned int index = 0;
-        for(std::vector<Sampler2DControl>::iterator iter = mSampler2Ds.begin(); iter != mSampler2Ds.end(); ++ iter) {
-            Sampler2DControl& control = *iter;
-            glActiveTexture(GL_TEXTURE0 + index);
-            glBindTexture(GL_TEXTURE_2D, control.texture->getHandle());
-            glUniform1i(control.handle, index);
-            ++ index;
-        }
+void MaterialResource::bindTextures() {
+    unsigned int index = 0;
+    for(std::vector<Sampler2DControl>::iterator iter = mSampler2Ds.begin(); iter != mSampler2Ds.end(); ++ iter) {
+        Sampler2DControl& control = *iter;
+        glActiveTexture(GL_TEXTURE0 + index);
+        glBindTexture(GL_TEXTURE_2D, control.texture->getHandle());
+        glUniform1i(control.handle, index);
+        ++ index;
     }
-
 }
-
 
 const ShaderProgramResource* MaterialResource::getShaderProg() const {
     return mShaderProg;
